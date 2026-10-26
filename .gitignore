@@ -1,0 +1,19 @@
+# LocalWP runtime logs
+logs/
+*.log
+
+# Direnv / Local auto-generated shell script
+app/.envrc
+
+# macOS / OS files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
