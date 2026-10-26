@@ -24,12 +24,11 @@
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'krypton' ); ?></a>
 
 	<!-- Top Announcement Bar -->
-	<aside class="top-announcement-bar" role="region" aria-label="<?php esc_attr_e( 'Top Announcement', 'krypton' ); ?>">
+	<div class="top-announcement-bar" role="region" aria-label="<?php esc_attr_e( 'Top Announcement', 'krypton' ); ?>">
 		<div class="krypton-container top-announcement-inner">
-			<span class="announcement-badge"><?php esc_html_e( 'Limited Time', 'krypton' ); ?></span>
-			<span class="announcement-text"><?php esc_html_e( 'Special Christmas Offer - 50% Off Top Rated Supplements!', 'krypton' ); ?></span>
+			<span class="announcement-text"><?php esc_html_e( 'Special Christmas Offer - 50%', 'krypton' ); ?></span>
 		</div>
-	</aside>
+	</div>
 
 	<!-- Main Header Container (Sticky / Fixed-top) -->
 	<header id="masthead" class="site-header" role="banner">
