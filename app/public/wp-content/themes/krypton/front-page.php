@@ -69,72 +69,83 @@ $hero_bg_image    = get_theme_mod( 'krypton_hero_bg_image', '' );
 			</div>
 		</div>
 
-		<!-- Right Column: Background Container & Dynamic Latest Post Card -->
+		<!-- Right Column: Model Image (old.svg) & Dynamic Latest Post Card -->
 		<div class="hero-right-column">
-			<div class="hero-right-bg<?php echo $hero_bg_image ? ' has-custom-bg' : ''; ?>"<?php echo $hero_bg_image ? ' style="background-image: url(' . esc_url( $hero_bg_image ) . ');"' : ''; ?>>
-			</div>
+			<div class="hero-model-scene">
+				<img 
+					src="<?php echo esc_url( $hero_bg_image ? $hero_bg_image : get_theme_file_uri( 'images/old.svg' ) ); ?>" 
+					alt="<?php echo esc_attr( $hero_headline ); ?>" 
+					class="hero-model-img"
+				/>
 
-			<?php
-			$latest_post_query = new WP_Query(
-				array(
-					'posts_per_page'      => 1,
-					'post_status'         => 'publish',
-					'ignore_sticky_posts' => 1,
-				)
-			);
+				<?php
+				$latest_post_query = new WP_Query(
+					array(
+						'posts_per_page'      => 1,
+						'post_status'         => 'publish',
+						'ignore_sticky_posts' => 1,
+					)
+				);
 
-			if ( $latest_post_query->have_posts() ) :
-				while ( $latest_post_query->have_posts() ) :
-					$latest_post_query->the_post();
-					$read_time = function_exists( 'krypton_reading_time' ) ? krypton_reading_time( get_the_ID() ) : 5;
-					?>
-					<article class="hero-featured-card">
-						<div class="hero-card-media-wrapper">
-							<a href="<?php the_permalink(); ?>" class="hero-card-img-link" tabindex="-1" aria-hidden="true">
-								<?php if ( has_post_thumbnail() ) : ?>
-									<?php the_post_thumbnail( 'medium_large', array( 'class' => 'hero-card-thumbnail' ) ); ?>
-								<?php else : ?>
-									<div class="hero-card-placeholder-media">
-										<div class="hero-card-placeholder-bottle">
-											<span class="bottle-badge"><?php esc_html_e( 'Verified', 'krypton' ); ?></span>
-											<span class="bottle-title"><?php the_title_attribute(); ?></span>
+				if ( $latest_post_query->have_posts() ) :
+					while ( $latest_post_query->have_posts() ) :
+						$latest_post_query->the_post();
+						$read_time = function_exists( 'krypton_reading_time' ) ? krypton_reading_time( get_the_ID() ) : 5;
+						?>
+						<article class="hero-featured-card">
+							<div class="hero-card-media-wrapper">
+								<a href="<?php the_permalink(); ?>" class="hero-card-img-link" tabindex="-1" aria-hidden="true">
+									<?php if ( has_post_thumbnail() ) : ?>
+										<?php the_post_thumbnail( 'medium_large', array( 'class' => 'hero-card-thumbnail' ) ); ?>
+									<?php else : ?>
+										<div class="hero-card-placeholder-media">
+											<div class="hero-card-placeholder-bottle">
+												<div class="bottle-inner-cap"></div>
+												<div class="bottle-inner-body">
+													<div class="bottle-inner-label">
+														<span class="bottle-inner-badge"><?php bloginfo( 'name' ); ?></span>
+														<span class="bottle-inner-name"><?php esc_html_e( 'TRIPLE COLLAGEN', 'krypton' ); ?></span>
+														<span class="bottle-inner-sub"><?php esc_html_e( '100% Natural Formula', 'krypton' ); ?></span>
+													</div>
+												</div>
+											</div>
 										</div>
-									</div>
-								<?php endif; ?>
-							</a>
-						</div>
-
-						<div class="hero-card-content">
-							<div class="hero-card-meta-row">
-								<span class="hero-meta-date">
-									<svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-									<?php echo esc_html( get_the_date( 'F j, Y' ) ); ?>
-								</span>
-								<span class="hero-meta-readtime">
-									<svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-									<?php echo esc_html( sprintf( __( '%d min read', 'krypton' ), $read_time ) ); ?>
-								</span>
-							</div>
-
-							<h3 class="hero-card-title">
-								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-							</h3>
-
-							<div class="hero-card-footer">
-								<span class="hero-card-author">
-									<?php echo esc_html( get_the_author() ); ?>
-								</span>
-								<a href="<?php the_permalink(); ?>" class="hero-card-read-link">
-									<?php esc_html_e( 'Read Article', 'krypton' ); ?>
+									<?php endif; ?>
 								</a>
 							</div>
-						</div>
-					</article>
-					<?php
-				endwhile;
-				wp_reset_postdata();
-			endif;
-			?>
+
+							<div class="hero-card-content">
+								<div class="hero-card-meta-row">
+									<span class="hero-meta-date">
+										<svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+										<?php echo esc_html( get_the_date( 'F j, Y' ) ); ?>
+									</span>
+									<span class="hero-meta-readtime">
+										<svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+										<?php echo esc_html( sprintf( __( '%d min read', 'krypton' ), $read_time ) ); ?>
+									</span>
+								</div>
+
+								<h3 class="hero-card-title">
+									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+								</h3>
+
+								<div class="hero-card-footer">
+									<span class="hero-card-author">
+										<?php echo esc_html( get_the_author() ); ?>
+									</span>
+									<a href="<?php the_permalink(); ?>" class="hero-card-read-link">
+										<?php esc_html_e( 'Read Article', 'krypton' ); ?>
+									</a>
+								</div>
+							</div>
+						</article>
+						<?php
+					endwhile;
+					wp_reset_postdata();
+				endif;
+				?>
+			</div>
 		</div>
 	</div>
 </section>
