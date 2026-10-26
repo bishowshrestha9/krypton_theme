@@ -59,9 +59,23 @@ endif;
 add_action( 'after_setup_theme', 'krypton_setup' );
 
 /**
+ * Fallback menu that renders a clean horizontal unordered list when no menu is assigned in WP Admin.
+ */
+function krypton_menu_fallback() {
+	echo '<div class="primary-menu-container"><ul id="primary-menu" class="primary-menu-nav">';
+	wp_list_pages(
+		array(
+			'title_li' => '',
+			'depth'    => 2,
+		)
+	);
+	echo '</ul></div>';
+}
+
+/**
  * Enqueue scripts and styles.
  */
 function krypton_scripts() {
-	wp_enqueue_style( 'krypton-style', get_stylesheet_uri(), array(), '1.0.0' );
+	wp_enqueue_style( 'krypton-style', get_stylesheet_uri(), array(), time() );
 }
 add_action( 'wp_enqueue_scripts', 'krypton_scripts' );

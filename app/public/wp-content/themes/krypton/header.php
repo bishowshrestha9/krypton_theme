@@ -64,7 +64,7 @@
 						'menu_class'     => 'primary-menu-nav',
 						'container'      => 'div',
 						'container_class'=> 'primary-menu-container',
-						'fallback_cb'    => 'wp_page_menu',
+						'fallback_cb'    => 'krypton_menu_fallback',
 						'depth'          => 3,
 					)
 				);
