@@ -112,36 +112,36 @@ get_header();
 
 							<!-- Combined Editorial / Trust Badges (Disclaimer, Fact Check, Review Process) -->
 							<div class="single-trust-badges" role="region" aria-label="<?php esc_attr_e( 'Editorial transparency', 'krypton' ); ?>">
-								<!-- Disclaimer Badge -->
-								<span class="trust-badge">
+								<!-- Disclaimer Badge (Linked to Disclaimer Page) -->
+								<a href="<?php echo esc_url( home_url( '/disclaimer/' ) ); ?>" class="trust-badge trust-badge-link" aria-label="<?php esc_attr_e( 'Read our Disclaimer', 'krypton' ); ?>">
 									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
 										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 									</svg>
 									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Disclaimer', 'krypton' ); ?></span>
-								</span>
+								</a>
 
 								<span class="trust-badge-divider" aria-hidden="true"></span>
 
-								<!-- Fact Check Badge -->
-								<span class="trust-badge">
+								<!-- Fact Check Badge (Triggers Fact Check Modal Popup) -->
+								<button type="button" class="trust-badge trust-badge-btn" data-modal-target="factCheckModal" aria-haspopup="dialog" aria-expanded="false" aria-controls="factCheckModal" aria-label="<?php esc_attr_e( 'View our Fact-Checking Standards', 'krypton' ); ?>">
 									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
 										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 									</svg>
 									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Fact Check', 'krypton' ); ?></span>
-								</span>
+								</button>
 
 								<span class="trust-badge-divider" aria-hidden="true"></span>
 
-								<!-- Review Process Badge -->
-								<span class="trust-badge">
+								<!-- Review Process Badge (Triggers Review Process Modal Popup) -->
+								<button type="button" class="trust-badge trust-badge-btn" data-modal-target="reviewProcessModal" aria-haspopup="dialog" aria-expanded="false" aria-controls="reviewProcessModal" aria-label="<?php esc_attr_e( 'View our Review Process Methodology', 'krypton' ); ?>">
 									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
 										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 									</svg>
 									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Review Process', 'krypton' ); ?></span>
-								</span>
+								</button>
 							</div>
 						</div>
 
@@ -554,8 +554,210 @@ document.addEventListener('DOMContentLoaded', function() {
 			observer.observe(el);
 		});
 	}
+
+	// 7. Trust Badge Modals Controller (Fact Check & Review Process Popups)
+	var modalTriggers = document.querySelectorAll('[data-modal-target]');
+	var activeModal = null;
+	var lastActiveTrigger = null;
+
+	function openModal(modalId, triggerEl) {
+		var modal = document.getElementById(modalId);
+		if (!modal) return;
+		activeModal = modal;
+		lastActiveTrigger = triggerEl;
+		modal.classList.add('is-open');
+		modal.setAttribute('aria-hidden', 'false');
+		if (triggerEl) triggerEl.setAttribute('aria-expanded', 'true');
+		document.body.classList.add('modal-open');
+
+		var focusable = modal.querySelector('.krypton-modal-close-btn, button, [href]');
+		if (focusable) focusable.focus();
+	}
+
+	function closeModal() {
+		if (!activeModal) return;
+		activeModal.classList.remove('is-open');
+		activeModal.setAttribute('aria-hidden', 'true');
+		document.body.classList.remove('modal-open');
+		if (lastActiveTrigger) {
+			lastActiveTrigger.setAttribute('aria-expanded', 'false');
+			lastActiveTrigger.focus();
+		}
+		activeModal = null;
+		lastActiveTrigger = null;
+	}
+
+	modalTriggers.forEach(function(btn) {
+		btn.addEventListener('click', function(e) {
+			e.preventDefault();
+			var targetModalId = this.getAttribute('data-modal-target');
+			openModal(targetModalId, this);
+		});
+	});
+
+	document.addEventListener('click', function(e) {
+		if (e.target.closest('[data-close-modal]')) {
+			e.preventDefault();
+			closeModal();
+		}
+	});
+
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape' && activeModal) {
+			closeModal();
+		}
+	});
 });
 </script>
+
+<!-- Fact-Checking Standards Modal Popup -->
+<div id="factCheckModal" class="krypton-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="factCheckModalTitle" aria-hidden="true">
+	<div class="krypton-modal-backdrop" data-close-modal></div>
+	<div class="krypton-modal-card">
+		<div class="krypton-modal-header">
+			<div class="krypton-modal-title-group">
+				<span class="krypton-modal-badge font-inter">
+					<svg width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
+						<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+					<?php esc_html_e( 'Editorial Standard', 'krypton' ); ?>
+				</span>
+				<h2 id="factCheckModalTitle" class="krypton-modal-title font-montserrat"><?php esc_html_e( 'Fact-Checking & Verification Standards', 'krypton' ); ?></h2>
+			</div>
+			<button type="button" class="krypton-modal-close-btn" data-close-modal aria-label="<?php esc_attr_e( 'Close modal', 'krypton' ); ?>">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+		</div>
+
+		<div class="krypton-modal-body font-inter">
+			<p class="krypton-modal-intro">
+				<?php esc_html_e( 'Our editorial integrity is anchored in verified scientific data, peer-reviewed clinical research, and strict fact-checking protocols. Here is how we ensure each claim is accurate and unbiased:', 'krypton' ); ?>
+			</p>
+
+			<div class="krypton-modal-pillars">
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+							<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( 'Primary & Peer-Reviewed Sources', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'Every health or scientific claim is cross-referenced with peer-reviewed medical publications (PubMed, NIH, Lancet) and regulatory guidelines (FDA, FTC).', 'krypton' ); ?></p>
+					</div>
+				</div>
+
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( 'Direct Policy & Lab Verification', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'We independently verify manufacturer claims, certificates of analysis (CoA), return terms, and consumer complaints across neutral forums before publishing.', 'krypton' ); ?></p>
+					</div>
+				</div>
+
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="10"></circle>
+							<polyline points="12 6 12 12 14 14"></polyline>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( 'Regular Re-Checking & Updates', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'Our editorial team routinely monitors and audits published articles when formulations, pricing structures, or scientific consensus shifts.', 'krypton' ); ?></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="krypton-modal-footer">
+			<button type="button" class="krypton-modal-btn font-inter" data-close-modal><?php esc_html_e( 'Understood', 'krypton' ); ?></button>
+		</div>
+	</div>
+</div>
+
+<!-- Review Process Modal Popup -->
+<div id="reviewProcessModal" class="krypton-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="reviewProcessModalTitle" aria-hidden="true">
+	<div class="krypton-modal-backdrop" data-close-modal></div>
+	<div class="krypton-modal-card">
+		<div class="krypton-modal-header">
+			<div class="krypton-modal-title-group">
+				<span class="krypton-modal-badge font-inter">
+					<svg width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
+						<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+					<?php esc_html_e( 'Review Methodology', 'krypton' ); ?>
+				</span>
+				<h2 id="reviewProcessModalTitle" class="krypton-modal-title font-montserrat"><?php esc_html_e( 'Our Independent Review Process', 'krypton' ); ?></h2>
+			</div>
+			<button type="button" class="krypton-modal-close-btn" data-close-modal aria-label="<?php esc_attr_e( 'Close modal', 'krypton' ); ?>">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+		</div>
+
+		<div class="krypton-modal-body font-inter">
+			<p class="krypton-modal-intro">
+				<?php esc_html_e( 'We believe consumers deserve 100% genuine, uncompromised product evaluations. Our testing process follows four rigorous criteria:', 'krypton' ); ?>
+			</p>
+
+			<div class="krypton-modal-pillars">
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+							<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( '1. We Purchase Every Product', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'All tested items are purchased with editorial funds like an everyday consumer. We do not accept free review units, sponsored gifts, or pre-approved brand copy.', 'krypton' ); ?></p>
+					</div>
+				</div>
+
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( '2. Real-World Hands-On Testing', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'Our researchers use products for at least 14 to 30 days under realistic daily conditions to assess ease of use, taste, texture, durability, and effectiveness.', 'krypton' ); ?></p>
+					</div>
+				</div>
+
+				<div class="krypton-modal-pillar">
+					<div class="pillar-icon-box">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+						</svg>
+					</div>
+					<div class="pillar-content">
+						<h3 class="pillar-title font-montserrat"><?php esc_html_e( '3. Multi-Pillar Objective Scoring', 'krypton' ); ?></h3>
+						<p class="pillar-text"><?php esc_html_e( 'Scores are calculated across 5 clear pillars: Ingredient Quality, Efficacy, Cost-to-Value, Safety, and Manufacturer Transparency.', 'krypton' ); ?></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="krypton-modal-footer">
+			<button type="button" class="krypton-modal-btn font-inter" data-close-modal><?php esc_html_e( 'Understood', 'krypton' ); ?></button>
+		</div>
+	</div>
+</div>
 
 <?php
 get_footer();

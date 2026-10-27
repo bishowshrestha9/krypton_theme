@@ -3312,12 +3312,30 @@ span.page-numbers[aria-current="page"] {
   line-height: 1.2;
   cursor: default;
   transition: all var(--transition-fast);
+  outline: none;
 }
 
-.trust-badge:hover {
-  border-color: #CBD5E1;
-  background-color: #F1F5F9;
-  color: #0F172A;
+.trust-badge-link,
+.trust-badge-btn {
+  cursor: pointer;
+  text-decoration: none;
+  background: #F8FAFC;
+  border: 1px solid #E2EAE6;
+  padding: 4px 12px 4px 9px;
+}
+
+.trust-badge:hover,
+.trust-badge-link:hover,
+.trust-badge-btn:hover {
+  border-color: var(--color-primary, #6EA590);
+  background-color: #F0F6F4;
+  color: #166534;
+}
+
+.trust-badge-link:focus-visible,
+.trust-badge-btn:focus-visible {
+  outline: 2px solid var(--color-primary, #6EA590);
+  outline-offset: 2px;
 }
 
 .trust-badge-icon {
@@ -3327,7 +3345,7 @@ span.page-numbers[aria-current="page"] {
 
 .trust-badge-label {
   letter-spacing: 0.01em;
-  color: #1F2937;
+  color: inherit;
 }
 
 .trust-badge-divider {
@@ -3336,6 +3354,217 @@ span.page-numbers[aria-current="page"] {
   height: 14px;
   background-color: #E2E8F0;
   margin: 0 -2px;
+}
+
+/* ==========================================================================
+   Editorial Transparency Modals (Fact Check & Review Process Popups)
+   ========================================================================== */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.krypton-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.krypton-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.krypton-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.krypton-modal-card {
+  position: relative;
+  z-index: 2;
+  background-color: #FFFFFF;
+  max-width: 560px;
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25), 0 0 1px rgba(0, 0, 0, 0.1);
+  padding: 26px 26px 20px;
+  box-sizing: border-box;
+  transform: scale(0.96) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.krypton-modal-overlay.is-open .krypton-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.krypton-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.krypton-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.krypton-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.71875rem; /* ~11.5px */
+  font-weight: 600;
+  color: #166534;
+  background-color: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.krypton-modal-title {
+  font-family: var(--font-family-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.krypton-modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  background-color: #F8FAFC;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.krypton-modal-close-btn:hover {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #0F172A;
+}
+
+.krypton-modal-body {
+  font-family: var(--font-family-sans);
+}
+
+.krypton-modal-intro {
+  font-size: 0.90625rem;
+  line-height: 1.55;
+  color: #475569;
+  margin: 0 0 16px 0;
+}
+
+.krypton-modal-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.krypton-modal-pillar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  transition: border-color var(--transition-fast);
+}
+
+.krypton-modal-pillar:hover {
+  border-color: #CBD5E1;
+}
+
+.pillar-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #E6F4EA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pillar-content {
+  flex: 1;
+}
+
+.pillar-title {
+  font-family: var(--font-family-heading);
+  font-size: 0.90625rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0 0 3px 0;
+  line-height: 1.3;
+}
+
+.pillar-text {
+  font-size: 0.8125rem;
+  color: #64748B;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.krypton-modal-footer {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #F1F5F9;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.krypton-modal-btn {
+  padding: 8px 22px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-primary, #6EA590);
+  color: #FFFFFF;
+  font-family: var(--font-family-sans);
+  font-size: 0.84375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.krypton-modal-btn:hover {
+  background-color: #5A8A77;
+}
+
+.krypton-modal-btn:active {
+  transform: scale(0.98);
 }
 
 /* Bottom Row: Post Metadata Details */
