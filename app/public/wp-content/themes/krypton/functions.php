@@ -315,10 +315,10 @@ add_filter( 'wp_resource_hints', 'krypton_resource_hints', 10, 2 );
  * Enqueue scripts and styles including Google Fonts.
  */
 function krypton_scripts() {
-	// Enqueue Google Fonts: Montserrat (600, 700, 800) and Inter (400, 500, 600, 700).
+	// Enqueue Google Fonts: Montserrat (400, 500, 600, 700, 800, 900) and Inter (400, 500, 600, 700, 800).
 	wp_enqueue_style(
 		'krypton-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap',
 		array(),
 		null
 	);

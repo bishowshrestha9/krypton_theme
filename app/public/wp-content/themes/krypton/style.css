@@ -17,7 +17,7 @@ Tags: blog, e-commerce, custom-colors, grid-layout, two-columns, full-width-temp
 /* ==========================================================================
    1. Google Fonts Import (Montserrat & Inter)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 /* ==========================================================================
    2. Design Tokens & CSS Custom Properties
@@ -67,7 +67,7 @@ Tags: blog, e-commerce, custom-colors, grid-layout, two-columns, full-width-temp
   /* Font Sizes (Scale) */
   --font-size-xs: 0.75rem;    /* 12px */
   --font-size-sm: 0.875rem;   /* 14px */
-  --font-size-base: 1rem;     /* 16px */
+  --font-size-base: 1.125rem; /* 18px (increased from 16px) */
   --font-size-lg: 1.125rem;   /* 18px */
   --font-size-xl: 1.25rem;    /* 20px */
   --font-size-2xl: 1.5rem;    /* 24px */
@@ -200,7 +200,7 @@ a:hover {
    ========================================================================== */
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: 'Montserrat', var(--font-family-heading), -apple-system, sans-serif;
+  font-family: 'Montserrat', var(--font-family-heading), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-weight: 700;
   line-height: var(--line-height-tight);
   color: var(--color-text-heading);
@@ -250,8 +250,8 @@ h6, .h6 {
 }
 
 p {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-base);
+  font-family: 'Inter', var(--font-family-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 1.125rem; /* 18px (increased from 16px) */
   font-weight: 400;
   line-height: var(--line-height-relaxed);
   color: var(--color-text-main);
@@ -3770,9 +3770,9 @@ body.modal-open {
 
 .single-article-content,
 .entry-content {
-  font-family: var(--font-family-sans);
-  font-size: 1.0625rem;
-  line-height: 1.8;
+  font-family: 'Inter', var(--font-family-sans), sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.85;
   color: #334155;
   width: 100%;
   max-width: var(--container-max-width, 1200px);
@@ -3783,12 +3783,14 @@ body.modal-open {
 
 .single-article-content p,
 .entry-content p {
+  font-family: 'Inter', var(--font-family-sans), sans-serif !important;
+  font-size: 1.1875rem !important; /* ~19px readable body copy */
   width: 100%;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1.6rem;
-  line-height: 1.8;
+  line-height: 1.85;
   box-sizing: border-box;
 }
 
@@ -5851,5 +5853,44 @@ body.admin-bar .krypton-sticky-toc-bar {
 .comment-respond,
 .comment-form {
   display: none !important;
+}
+
+/* ==========================================================================
+   Theme-Wide Typography (Montserrat for Headings, Inter for Paragraphs, Increased P Size)
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6,
+.single-article-content h1, .single-article-content h2, .single-article-content h3, .single-article-content h4, .single-article-content h5, .single-article-content h6,
+.post-title, .single-post-title, .card-title, .widget-title, .section-title, .category-title, .author-title, .toc-title {
+  font-family: 'Montserrat', var(--font-family-heading), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+p,
+.entry-content p,
+.single-article-content p,
+.post-content p,
+.article-content p,
+.category-directory-intro p,
+.author-full-bio p {
+  font-family: 'Inter', var(--font-family-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 1.125rem; /* 18px base paragraph font size */
+  line-height: 1.75;
+}
+
+.entry-content p,
+.single-article-content p {
+  font-size: 1.1875rem !important; /* 19px for editorial post body readability */
+  line-height: 1.85 !important;
+}
+
+@media (max-width: 768px) {
+  p {
+    font-size: 1.0625rem; /* 17px on mobile for comfort */
+  }
+  .entry-content p,
+  .single-article-content p {
+    font-size: 1.125rem !important; /* 18px on mobile */
+  }
 }
 
