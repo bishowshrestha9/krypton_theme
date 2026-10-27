@@ -4780,6 +4780,205 @@ blockquote {
   }
 }
 
+/* ==========================================================================
+   14. Category Directory Page (/category/)
+   ========================================================================== */
+.category-directory-page {
+  background-color: #FFFFFF;
+  padding: 40px 0 80px 0;
+}
+
+.category-directory-container {
+  max-width: var(--container-max-width, 1200px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 3vw, 1.5rem);
+  padding-right: clamp(1rem, 3vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.category-directory-header {
+  margin-bottom: 2rem;
+}
+
+.category-directory-title {
+  font-family: var(--font-family-heading);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 1.5rem 0;
+}
+
+.category-directory-intro {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #4B5563;
+  max-width: 960px;
+}
+
+.category-directory-intro p {
+  margin-bottom: 1.25rem;
+}
+
+.category-directory-intro p:last-child {
+  margin-bottom: 0;
+}
+
+/* Quick Jump Category Navigation Pills */
+.category-pills-nav {
+  margin: 2.25rem 0 3.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+}
+
+.category-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
+}
+
+.category-pill-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.category-pill-link:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(110, 165, 144, 0.25);
+}
+
+/* Category Showcase Sections */
+.category-showcase-section {
+  margin-bottom: 4rem;
+  scroll-margin-top: 100px;
+}
+
+.category-showcase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 1.75rem;
+}
+
+.category-showcase-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-showcase-title {
+  font-family: var(--font-family-heading);
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.category-showcase-title a,
+.category-title-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.category-showcase-title a:hover,
+.category-title-link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.category-showcase-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4B5563;
+  margin: 0;
+  max-width: 820px;
+}
+
+.category-showcase-action {
+  flex-shrink: 0;
+}
+
+.category-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-hover);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.category-view-all-btn:hover {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  transform: translateX(2px);
+  box-shadow: 0 3px 10px rgba(110, 165, 144, 0.25);
+}
+
+.category-view-all-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.category-view-all-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.category-showcase-divider {
+  border: 0;
+  height: 1px;
+  background-color: #E2E8F0;
+  margin-top: 3.5rem;
+}
+
+.category-no-posts {
+  font-size: 0.9375rem;
+  color: #64748B;
+  font-style: italic;
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .category-showcase-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .category-showcase-section {
+    margin-bottom: 3rem;
+  }
+
+  .category-showcase-divider {
+    margin-top: 2.5rem;
+  }
+}
+
 
 
 
