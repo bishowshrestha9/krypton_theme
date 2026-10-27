@@ -166,7 +166,7 @@ $card_tint_colors = array( '#1f1b34', '#36391d', '#1a273e', '#2c1e2f', '#1b322c'
 						?>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'category-post-card' ); ?>>
 							<!-- Card Thumbnail Container -->
-							<div class="post-card-media-wrapper" style="background-color: <?php echo esc_attr( $tint_color ); ?>;">
+							<div class="post-card-media-wrapper<?php echo has_post_thumbnail() ? ' has-thumbnail' : ' is-fallback'; ?>"<?php echo ! has_post_thumbnail() ? ' style="background-color: ' . esc_attr( $tint_color ) . ';"' : ''; ?>>
 								<a href="<?php the_permalink(); ?>" class="post-card-media-link" tabindex="-1" aria-hidden="true">
 									<?php if ( has_post_thumbnail() ) : ?>
 										<?php the_post_thumbnail( 'medium_large', array( 'class' => 'post-card-thumbnail' ) ); ?>

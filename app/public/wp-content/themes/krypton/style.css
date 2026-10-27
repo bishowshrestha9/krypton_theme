@@ -2242,6 +2242,10 @@ blockquote {
   flex-shrink: 0;
 }
 
+.post-card-media-wrapper.has-thumbnail {
+  background-color: #FFFFFF !important;
+}
+
 .category-post-card:hover .post-card-media-wrapper {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
@@ -4396,12 +4400,37 @@ blockquote {
   min-height: 270px;
   padding: 24px;
   position: relative;
+  background-color: #FFFFFF;
+  border-right: 1px solid #F1F5F9;
+}
+
+.featured-card-media .author-card-media-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
 }
 
 .featured-card-media .author-article-thumb-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  background-color: transparent;
+  transition: transform var(--transition-normal);
+}
+
+.author-featured-article-card:hover .author-article-thumb-img {
+  transform: scale(1.03);
+}
+
+.featured-card-media.is-fallback {
+  background-color: #F8FAF9;
 }
 
 .post-card-bottle-fallback.is-large {
@@ -4482,18 +4511,43 @@ blockquote {
 }
 
 .grid-card-media {
-  height: 190px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 18px;
   position: relative;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.grid-card-media .author-card-media-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
 }
 
 .grid-card-media .author-article-thumb-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 165px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  background-color: transparent;
+  transition: transform var(--transition-normal);
+}
+
+.author-grid-card:hover .author-article-thumb-img {
+  transform: scale(1.04);
+}
+
+.grid-card-media.is-fallback {
+  background-color: #F8FAF9;
 }
 
 .grid-card-content {
@@ -4577,6 +4631,11 @@ blockquote {
 
   .author-featured-article-card {
     grid-template-columns: 1fr;
+  }
+
+  .featured-card-media {
+    border-right: none;
+    border-bottom: 1px solid #F1F5F9;
   }
 
   .author-articles-grid {

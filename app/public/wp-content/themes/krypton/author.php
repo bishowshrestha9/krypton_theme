@@ -467,28 +467,30 @@ $mockup_articles = array(
 
 			<!-- A. Top Big Featured Article -->
 			<?php if ( $featured_article ) : 
-				$feat_tint = ! empty( $featured_article['tint'] ) ? $featured_article['tint'] : '#8E3B9E';
+				$has_feat_thumb = ! empty( $featured_article['has_thumb'] );
 			?>
 				<article class="author-featured-article-card">
-					<div class="featured-card-media" style="background-color: <?php echo esc_attr( $feat_tint ); ?>;">
-						<?php if ( ! empty( $featured_article['has_thumb'] ) ) : ?>
-							<?php echo $featured_article['thumb']; ?>
-						<?php else : ?>
-							<!-- Clean Fallback Product Bottle Visual -->
-							<div class="post-card-bottle-fallback is-large">
-								<div class="fallback-bottle">
-									<div class="bottle-cap"></div>
-									<div class="bottle-body">
-										<div class="bottle-label">
-											<span class="bottle-icon">
-												<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-											</span>
-											<span class="bottle-brand"><?php bloginfo( 'name' ); ?></span>
+					<div class="featured-card-media<?php echo $has_feat_thumb ? ' has-thumbnail' : ' is-fallback'; ?>">
+						<a href="<?php echo esc_url( $featured_article['url'] ); ?>" class="author-card-media-link" tabindex="-1" aria-hidden="true">
+							<?php if ( $has_feat_thumb ) : ?>
+								<?php echo $featured_article['thumb']; ?>
+							<?php else : ?>
+								<!-- Clean Fallback Product Bottle Visual -->
+								<div class="post-card-bottle-fallback is-large">
+									<div class="fallback-bottle">
+										<div class="bottle-cap"></div>
+										<div class="bottle-body">
+											<div class="bottle-label">
+												<span class="bottle-icon">
+													<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+												</span>
+												<span class="bottle-brand"><?php bloginfo( 'name' ); ?></span>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						<?php endif; ?>
+							<?php endif; ?>
+						</a>
 					</div>
 
 					<div class="featured-card-content">
@@ -518,27 +520,29 @@ $mockup_articles = array(
 			<!-- B. 3-Column Articles Grid -->
 			<div class="author-articles-grid">
 				<?php foreach ( $grid_articles as $index => $article_item ) : 
-					$tint = ! empty( $article_item['tint'] ) ? $article_item['tint'] : $tint_colors[ ( $index + 1 ) % count( $tint_colors ) ];
+					$has_grid_thumb = ! empty( $article_item['has_thumb'] );
 				?>
 					<article class="author-grid-card">
-						<div class="grid-card-media" style="background-color: <?php echo esc_attr( $tint ); ?>;">
-							<?php if ( ! empty( $article_item['has_thumb'] ) ) : ?>
-								<?php echo $article_item['thumb']; ?>
-							<?php else : ?>
-								<div class="post-card-bottle-fallback">
-									<div class="fallback-bottle">
-										<div class="bottle-cap"></div>
-										<div class="bottle-body">
-											<div class="bottle-label">
-												<span class="bottle-icon">
-													<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-												</span>
-												<span class="bottle-brand"><?php bloginfo( 'name' ); ?></span>
+						<div class="grid-card-media<?php echo $has_grid_thumb ? ' has-thumbnail' : ' is-fallback'; ?>">
+							<a href="<?php echo esc_url( $article_item['url'] ); ?>" class="author-card-media-link" tabindex="-1" aria-hidden="true">
+								<?php if ( $has_grid_thumb ) : ?>
+									<?php echo $article_item['thumb']; ?>
+								<?php else : ?>
+									<div class="post-card-bottle-fallback">
+										<div class="fallback-bottle">
+											<div class="bottle-cap"></div>
+											<div class="bottle-body">
+												<div class="bottle-label">
+													<span class="bottle-icon">
+														<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+													</span>
+													<span class="bottle-brand"><?php bloginfo( 'name' ); ?></span>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							<?php endif; ?>
+								<?php endif; ?>
+							</a>
 						</div>
 
 						<div class="grid-card-content">
