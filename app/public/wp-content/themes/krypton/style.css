@@ -3262,20 +3262,42 @@ span.page-numbers[aria-current="page"] {
   box-sizing: border-box;
 }
 
-/* 3. Editorial / Trust Badges (Disclaimer, Fact Check, Review Process with dividers) */
-.single-trust-badges {
+/* 3. Combined Author & Editorial Trust Bar */
+.single-author-meta-bar {
+  border-top: 1px solid #E5E7EB;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 16px 0;
+  margin-top: 1.5rem;
+  margin-bottom: 2.25rem;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Top Row: Author Info on Left + Trust Badges on Right */
+.single-author-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Editorial / Trust Badges (Disclaimer, Fact Check, Review Process with dividers) */
+.single-trust-badges {
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 2rem;
+  gap: 10px;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .trust-badge {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 14px 5px 10px;
+  gap: 6px;
+  padding: 4px 12px 4px 9px;
   background-color: #F8FAFC;
   border: 1px solid #E2EAE6;
   border-radius: 9999px;
@@ -3307,23 +3329,18 @@ span.page-numbers[aria-current="page"] {
 .trust-badge-divider {
   display: inline-block;
   width: 1px;
-  height: 16px;
+  height: 14px;
   background-color: #E2E8F0;
   margin: 0 -2px;
 }
 
-/* 4. Author & Meta Bar (Bounded by Top & Bottom Divider Lines) */
-.single-author-meta-bar {
-  border-top: 1px solid #E5E7EB;
-  border-bottom: 1px solid #E5E7EB;
-  padding: 16px 0;
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
+/* Bottom Row: Post Metadata Details */
+.single-author-bottom-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  border-top: 1px dashed #F1F5F9;
+  padding-top: 10px;
 }
 
 /* Left Side (Author Info) */
@@ -3745,7 +3762,7 @@ span.page-numbers[aria-current="page"] {
 
   .single-trust-badges {
     gap: 8px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0;
   }
 
   .trust-badge-divider {
@@ -3758,12 +3775,16 @@ span.page-numbers[aria-current="page"] {
   }
 
   .single-author-meta-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
     padding: 14px 0;
     margin-top: 1.25rem;
     margin-bottom: 2rem;
+    gap: 12px;
+  }
+
+  .single-author-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .single-meta-details {

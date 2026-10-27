@@ -156,95 +156,98 @@ get_header();
 					<!-- 2. Post Title (h1) -->
 					<?php the_title( '<h1 class="entry-title single-post-title font-montserrat">', '</h1>' ); ?>
 
-					<!-- 3. Editorial / Trust Badges -->
-					<div class="single-trust-badges" role="region" aria-label="<?php esc_attr_e( 'Editorial transparency', 'krypton' ); ?>">
-						
-						<!-- Disclaimer Badge -->
-						<span class="trust-badge">
-							<svg class="trust-badge-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-								<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
-								<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-							</svg>
-							<span class="trust-badge-label font-inter"><?php esc_html_e( 'Disclaimer', 'krypton' ); ?></span>
-						</span>
-
-						<span class="trust-badge-divider" aria-hidden="true"></span>
-
-						<!-- Fact Check Badge -->
-						<span class="trust-badge">
-							<svg class="trust-badge-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-								<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
-								<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-							</svg>
-							<span class="trust-badge-label font-inter"><?php esc_html_e( 'Fact Check', 'krypton' ); ?></span>
-						</span>
-
-						<span class="trust-badge-divider" aria-hidden="true"></span>
-
-						<!-- Review Process Badge -->
-						<span class="trust-badge">
-							<svg class="trust-badge-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-								<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
-								<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-							</svg>
-							<span class="trust-badge-label font-inter"><?php esc_html_e( 'Review Process', 'krypton' ); ?></span>
-						</span>
-					</div>
-
-					<!-- 4. Author & Meta Bar (Bounded by Top & Bottom Divider Lines) -->
+					<!-- 3. Combined Author & Editorial Trust Bar (Bounded by Top & Bottom Divider Lines) -->
 					<div class="single-author-meta-bar">
 						
-						<!-- Left Side: Author Information -->
-						<div class="single-author-info">
-							<a href="<?php echo esc_url( get_author_posts_url( $author_id ) ); ?>" class="author-avatar-link" aria-label="<?php echo esc_attr( $author_name ); ?>">
-								<div class="author-avatar-container">
-									<?php
-									$avatar_html = get_avatar( $author_id, 44, '', esc_attr( $author_name ), array( 'class' => 'author-avatar-img' ) );
-									echo $avatar_html;
-									?>
-								</div>
-							</a>
-							<div class="author-text-meta">
-								<a href="<?php echo esc_url( get_author_posts_url( $author_id ) ); ?>" class="author-name-link font-montserrat">
-									<span class="author-name"><?php echo esc_html( $author_name ); ?></span>
+						<!-- Top Row: Author Profile on Left + Trust Badges on Right -->
+						<div class="single-author-top-row">
+							<div class="single-author-info">
+								<a href="<?php echo esc_url( get_author_posts_url( $author_id ) ); ?>" class="author-avatar-link" aria-label="<?php echo esc_attr( $author_name ); ?>">
+									<div class="author-avatar-container">
+										<?php
+										$avatar_html = get_avatar( $author_id, 44, '', esc_attr( $author_name ), array( 'class' => 'author-avatar-img' ) );
+										echo $avatar_html;
+										?>
+									</div>
 								</a>
-								<span class="author-bio-title font-inter"><?php echo esc_html( $author_bio ); ?></span>
+								<div class="author-text-meta">
+									<a href="<?php echo esc_url( get_author_posts_url( $author_id ) ); ?>" class="author-name-link font-montserrat">
+										<span class="author-name"><?php echo esc_html( $author_name ); ?></span>
+									</a>
+									<span class="author-bio-title font-inter"><?php echo esc_html( $author_bio ); ?></span>
+								</div>
+							</div>
+
+							<!-- Combined Editorial / Trust Badges (Disclaimer, Fact Check, Review Process) -->
+							<div class="single-trust-badges" role="region" aria-label="<?php esc_attr_e( 'Editorial transparency', 'krypton' ); ?>">
+								<!-- Disclaimer Badge -->
+								<span class="trust-badge">
+									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
+										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Disclaimer', 'krypton' ); ?></span>
+								</span>
+
+								<span class="trust-badge-divider" aria-hidden="true"></span>
+
+								<!-- Fact Check Badge -->
+								<span class="trust-badge">
+									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
+										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Fact Check', 'krypton' ); ?></span>
+								</span>
+
+								<span class="trust-badge-divider" aria-hidden="true"></span>
+
+								<!-- Review Process Badge -->
+								<span class="trust-badge">
+									<svg class="trust-badge-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+										<circle cx="10" cy="10" r="8.5" stroke="#68D391" stroke-width="1.6" />
+										<path d="M6.5 10.2L8.8 12.5L13.8 7.5" stroke="#38A169" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+									<span class="trust-badge-label font-inter"><?php esc_html_e( 'Review Process', 'krypton' ); ?></span>
+								</span>
 							</div>
 						</div>
 
-						<!-- Right Side: Post Metadata -->
-						<div class="single-meta-details font-inter">
-							<!-- 1. Publication Date -->
-							<time class="meta-item meta-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
-								<?php echo esc_html( $pub_date ); ?>
-							</time>
+						<!-- Bottom Row: Post Metadata -->
+						<div class="single-author-bottom-row">
+							<div class="single-meta-details font-inter">
+								<!-- 1. Publication Date -->
+								<time class="meta-item meta-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
+									<?php echo esc_html( $pub_date ); ?>
+								</time>
 
-							<!-- 2. Last Modified Date (if available) -->
-							<?php if ( $mod_date && ( $mod_date !== $pub_date || get_the_modified_time( 'U' ) > get_the_time( 'U' ) ) ) : ?>
-								<span class="meta-item meta-modified">
-									(<?php printf( esc_html__( 'Updated on: %s', 'krypton' ), esc_html( $mod_date ) ); ?>)
+								<!-- 2. Last Modified Date (if available) -->
+								<?php if ( $mod_date && ( $mod_date !== $pub_date || get_the_modified_time( 'U' ) > get_the_time( 'U' ) ) ) : ?>
+									<span class="meta-item meta-modified">
+										(<?php printf( esc_html__( 'Updated on: %s', 'krypton' ), esc_html( $mod_date ) ); ?>)
+									</span>
+								<?php endif; ?>
+
+								<span class="meta-slash" aria-hidden="true">/</span>
+
+								<!-- 3. 'Reviewed By' Indicator -->
+								<span class="meta-item meta-reviewed">
+									<?php
+									/* translators: %s: Reviewer link or name */
+									printf(
+										esc_html__( 'Reviewed By %s', 'krypton' ),
+										'<a href="' . esc_url( get_author_posts_url( $author_id ) ) . '" class="author-reviewer-link font-montserrat">' . esc_html( $reviewed_by ) . '</a>'
+									);
+									?>
 								</span>
-							<?php endif; ?>
 
-							<span class="meta-slash" aria-hidden="true">/</span>
+								<span class="meta-slash" aria-hidden="true">/</span>
 
-							<!-- 3. 'Reviewed By' Indicator -->
-							<span class="meta-item meta-reviewed">
-								<?php
-								/* translators: %s: Reviewer link or name */
-								printf(
-									esc_html__( 'Reviewed By %s', 'krypton' ),
-									'<a href="' . esc_url( get_author_posts_url( $author_id ) ) . '" class="author-reviewer-link font-montserrat">' . esc_html( $reviewed_by ) . '</a>'
-								);
-								?>
-							</span>
-
-							<span class="meta-slash" aria-hidden="true">/</span>
-
-							<!-- 4. Estimated Reading Time -->
-							<span class="meta-item meta-reading-time">
-								<?php printf( esc_html__( '%d min read', 'krypton' ), (int) $reading_mins ); ?>
-							</span>
+								<!-- 4. Estimated Reading Time -->
+								<span class="meta-item meta-reading-time">
+									<?php printf( esc_html__( '%d min read', 'krypton' ), (int) $reading_mins ); ?>
+								</span>
+							</div>
 						</div>
 
 					</div>
@@ -252,9 +255,9 @@ get_header();
 				</div>
 			</header>
 
-			<!-- 5. Table of Contents Section (In-Page Static Card) -->
+			<!-- 4. Table of Contents Section (In-Page Static Card - Collapsed at First) -->
 			<section class="krypton-toc-section krypton-container" id="kryptonTocSection" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
-				<div id="krypton-toc" class="krypton-toc-card">
+				<div id="krypton-toc" class="krypton-toc-card is-collapsed">
 					
 					<!-- Header Bar -->
 					<div class="toc-header-bar">
@@ -264,8 +267,8 @@ get_header();
 								<?php echo sprintf( esc_html__( '%d sections · %d min read', 'krypton' ), $total_sections, (int) $reading_mins ); ?>
 							</span>
 						</div>
-						<button type="button" class="toc-toggle-btn font-inter" id="tocToggleBtn" aria-expanded="true" aria-controls="tocColumnsGrid">
-							<span class="toc-toggle-text"><?php esc_html_e( 'Hide', 'krypton' ); ?></span>
+						<button type="button" class="toc-toggle-btn font-inter" id="tocToggleBtn" aria-expanded="false" aria-controls="tocColumnsGrid">
+							<span class="toc-toggle-text"><?php esc_html_e( 'Show', 'krypton' ); ?></span>
 							<svg class="toc-toggle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<polyline points="18 15 12 9 6 15"></polyline>
 							</svg>
