@@ -91,61 +91,118 @@ function krypton_reading_time( $post_id = null ) {
  * @param int|null $post_id Post ID.
  * @return array Array of heading items.
  */
-function krypton_get_post_h2_headings( $post_id = null ) {
+function krypton_get_post_headings( $post_id = null ) {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
-	$content = get_post_field( 'post_content', $post_id );
+	$content  = get_post_field( 'post_content', $post_id );
 	$headings = array();
 
-	if ( preg_match_all( '/<h2(.*?)>(.*?)<\/h2>/i', $content, $matches, PREG_SET_ORDER ) ) {
-		$index = 0;
+	if ( preg_match_all( '/<h([23])(.*?)>(.*?)<\/h\1>/i', $content, $matches, PREG_SET_ORDER ) ) {
+		$h2_index       = 0;
+		$current_h2_key = null;
+		$seen_ids       = array();
+
 		foreach ( $matches as $match ) {
-			$index++;
-			$attrs = $match[1];
-			$title = wp_strip_all_tags( $match[2] );
+			$level = (int) $match[1];
+			$attrs = $match[2];
+			$title = trim( wp_strip_all_tags( $match[3] ) );
+			if ( empty( $title ) ) {
+				continue;
+			}
+
 			if ( preg_match( '/id=["\'](.*?)["\']/i', $attrs, $id_m ) ) {
 				$id = $id_m[1];
 			} else {
 				$id = sanitize_title( $title );
 				if ( empty( $id ) ) {
-					$id = 'section-' . $index;
+					$id = 'heading-' . ( $level === 2 ? ( $h2_index + 1 ) : ( $h2_index . '-sub' ) );
+				}
+				$base_id = $id;
+				$suffix  = 1;
+				while ( in_array( $id, $seen_ids, true ) ) {
+					$id = $base_id . '-' . $suffix;
+					$suffix++;
 				}
 			}
-			$headings[] = array(
-				'index' => $index,
-				'id'    => $id,
-				'title' => $title,
-			);
+			$seen_ids[] = $id;
+
+			if ( 2 === $level ) {
+				$h2_index++;
+				$headings[] = array(
+					'index'    => $h2_index,
+					'level'    => 2,
+					'id'       => $id,
+					'title'    => $title,
+					'children' => array(),
+				);
+				$current_h2_key = count( $headings ) - 1;
+			} elseif ( 3 === $level ) {
+				$h3_item = array(
+					'level' => 3,
+					'id'    => $id,
+					'title' => $title,
+				);
+				if ( null !== $current_h2_key && isset( $headings[ $current_h2_key ] ) ) {
+					$child_idx          = count( $headings[ $current_h2_key ]['children'] ) + 1;
+					$h3_item['index']   = sprintf( '%02d.%d', (int) $headings[ $current_h2_key ]['index'], $child_idx );
+					$headings[ $current_h2_key ]['children'][] = $h3_item;
+				} else {
+					$h2_index++;
+					$headings[] = array(
+						'index'    => $h2_index,
+						'level'    => 3,
+						'id'       => $id,
+						'title'    => $title,
+						'children' => array(),
+					);
+					$current_h2_key = count( $headings ) - 1;
+				}
+			}
 		}
 	}
 
 	return $headings;
 }
 
+function krypton_get_post_h2_headings( $post_id = null ) {
+	return krypton_get_post_headings( $post_id );
+}
+
 /**
- * Automatically inject unique IDs into <h2> headings inside post content for Table of Contents navigation.
+ * Automatically inject unique IDs into <h2> and <h3> headings inside post content for Table of Contents navigation.
  *
  * @param string $content Post content.
  * @return string Modified content with heading IDs.
  */
 function krypton_add_ids_to_h2( $content ) {
 	if ( is_singular( 'post' ) ) {
-		$index = 0;
-		$content = preg_replace_callback(
-			'/<h2(.*?)>(.*?)<\/h2>/i',
-			function( $matches ) use ( &$index ) {
+		$index    = 0;
+		$seen_ids = array();
+		$content  = preg_replace_callback(
+			'/<h([23])(.*?)>(.*?)<\/h\1>/i',
+			function( $matches ) use ( &$index, &$seen_ids ) {
 				$index++;
-				$attrs = $matches[1];
-				$title = wp_strip_all_tags( $matches[2] );
+				$tag   = 'h' . $matches[1];
+				$attrs = $matches[2];
+				$title = wp_strip_all_tags( $matches[3] );
 				if ( ! preg_match( '/id=["\'](.*?)["\']/i', $attrs ) ) {
 					$id = sanitize_title( $title );
 					if ( empty( $id ) ) {
 						$id = 'section-' . $index;
 					}
+					$base_id = $id;
+					$suffix  = 1;
+					while ( in_array( $id, $seen_ids, true ) ) {
+						$id = $base_id . '-' . $suffix;
+						$suffix++;
+					}
+					$seen_ids[] = $id;
 					$attrs .= ' id="' . esc_attr( $id ) . '"';
+				} else if ( preg_match( '/id=["\'](.*?)["\']/i', $attrs, $id_m ) ) {
+					$seen_ids[] = $id_m[1];
 				}
-				return '<h2' . $attrs . '>' . $matches[2] . '</h2>';
+				return '<' . $tag . $attrs . '>' . $matches[3] . '</' . $tag . '>';
 			},
 			$content
 		);

@@ -229,6 +229,18 @@ get_header();
 															<polyline points="9 18 15 12 9 6"></polyline>
 														</svg>
 													</a>
+													<?php if ( ! empty( $item['children'] ) ) : ?>
+														<ul class="toc-subitems-list">
+															<?php foreach ( $item['children'] as $child ) : ?>
+																<li class="toc-subitem">
+																	<a href="#<?php echo esc_attr( $child['id'] ); ?>" class="toc-item-link toc-subitem-link font-inter" data-target="<?php echo esc_attr( $child['id'] ); ?>" data-index="<?php echo esc_attr( $child['index'] ); ?>" data-title="<?php echo esc_attr( $child['title'] ); ?>">
+																		<span class="toc-subitem-bullet" aria-hidden="true">↳</span>
+																		<span class="toc-subitem-text"><?php echo esc_html( $child['title'] ); ?></span>
+																	</a>
+																</li>
+															<?php endforeach; ?>
+														</ul>
+													<?php endif; ?>
 												</li>
 											<?php endforeach; ?>
 										</ul>
@@ -292,6 +304,18 @@ get_header();
 																<polyline points="9 18 15 12 9 6"></polyline>
 															</svg>
 														</a>
+														<?php if ( ! empty( $item['children'] ) ) : ?>
+															<ul class="toc-subitems-list">
+																<?php foreach ( $item['children'] as $child ) : ?>
+																	<li class="toc-subitem">
+																		<a href="#<?php echo esc_attr( $child['id'] ); ?>" class="toc-item-link toc-subitem-link font-inter" data-target="<?php echo esc_attr( $child['id'] ); ?>" data-index="<?php echo esc_attr( $child['index'] ); ?>" data-title="<?php echo esc_attr( $child['title'] ); ?>">
+																			<span class="toc-subitem-bullet" aria-hidden="true">↳</span>
+																			<span class="toc-subitem-text"><?php echo esc_html( $child['title'] ); ?></span>
+																		</a>
+																	</li>
+																<?php endforeach; ?>
+															</ul>
+														<?php endif; ?>
 													</li>
 												<?php endforeach; ?>
 											</ul>
