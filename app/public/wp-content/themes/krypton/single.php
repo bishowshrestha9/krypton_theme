@@ -253,8 +253,9 @@ get_header();
 			</header>
 
 			<!-- 5. Table of Contents Section (Sticky & Scannable H2 Headings) -->
-			<section class="krypton-toc-section krypton-container" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
-				<div id="krypton-toc" class="krypton-toc-card">
+			<div class="krypton-toc-anchor">
+				<section class="krypton-toc-section krypton-container" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
+					<div id="krypton-toc" class="krypton-toc-card">
 					
 					<!-- Header Containers with Smooth Cross-Fade -->
 					<div class="toc-headers-container">
@@ -332,6 +333,7 @@ get_header();
 
 				</div>
 			</section>
+		</div>
 
 			<!-- Single Post Body Content -->
 			<div class="krypton-container single-body-container">
@@ -487,41 +489,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// 4. Automatically Hide TOC when entering Sticky position; restore when scrolled back up
 	if (tocSection && tocCard) {
-		var tocInitialOffset = 0;
+		var tocAnchor = document.querySelector('.krypton-toc-anchor');
 		var wasSticky = false;
+		var ticking = false;
+		var initialTop = 0;
+		var initialHeight = 0;
 
-		function getInitialOffset() {
-			if (!tocInitialOffset || window.pageYOffset < 10) {
-				var rect = tocSection.getBoundingClientRect();
-				tocInitialOffset = rect.top + window.pageYOffset;
+		function measureTOC() {
+			if (!tocAnchor) return;
+			// Only measure true dimensions when expanded
+			if (!tocCard.classList.contains('is-collapsed')) {
+				var rect = tocAnchor.getBoundingClientRect();
+				initialTop = rect.top + window.pageYOffset;
+				initialHeight = tocSection.offsetHeight;
 			}
-			return tocInitialOffset;
 		}
 
+		measureTOC();
+		window.addEventListener('load', measureTOC);
+		window.addEventListener('resize', function() {
+			measureTOC();
+			updateStickyState();
+		}, { passive: true });
+
 		function updateStickyState() {
-			var initialTop = getInitialOffset();
+			if (!initialTop) measureTOC();
+			if (!initialTop) return;
+
 			var scrollY = window.pageYOffset;
 
-			// Sticky enter at 85px header threshold; 35px buffer exit threshold to prevent jitter/oscillation
+			// Sticky enter at 85px header threshold; generous 45px buffer exit threshold to prevent oscillation
 			var stickyEnter = initialTop - 85;
-			var stickyExit  = initialTop - 120;
+			var stickyExit  = initialTop - 130;
 
 			if (scrollY > stickyEnter && !wasSticky) {
+				if (tocAnchor && initialHeight > 0) {
+					tocAnchor.style.minHeight = initialHeight + 'px';
+				}
 				tocSection.classList.add('is-scrolled-sticky');
 				collapseTOC();
 				wasSticky = true;
 			} else if (scrollY < stickyExit && wasSticky) {
+				if (tocAnchor) {
+					tocAnchor.style.minHeight = '';
+				}
 				tocSection.classList.remove('is-scrolled-sticky');
 				expandTOC();
 				wasSticky = false;
+				setTimeout(measureTOC, 350);
 			}
 		}
 
-		window.addEventListener('scroll', updateStickyState, { passive: true });
-		window.addEventListener('resize', function() {
-			tocInitialOffset = 0;
-			updateStickyState();
+		window.addEventListener('scroll', function() {
+			if (!ticking) {
+				window.requestAnimationFrame(function() {
+					updateStickyState();
+					ticking = false;
+				});
+				ticking = true;
+			}
 		}, { passive: true });
+
 		window.requestAnimationFrame(updateStickyState);
 	}
 
