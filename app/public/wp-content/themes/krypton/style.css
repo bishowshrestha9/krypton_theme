@@ -5844,3 +5844,12 @@ body.admin-bar .krypton-sticky-toc-bar {
   background-color: #E5F1EB;
 }
 
+/* Hide Comments & Leave a Reply site-wide */
+#comments,
+#respond,
+.comments-area,
+.comment-respond,
+.comment-form {
+  display: none !important;
+}
+

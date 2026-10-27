@@ -354,12 +354,6 @@ get_header();
 					</footer>
 				<?php endif; ?>
 
-				<?php
-				// Comments Section
-				if ( comments_open() || get_comments_number() ) :
-					comments_template();
-				endif;
-				?>
 			</div>
 
 		</article>
