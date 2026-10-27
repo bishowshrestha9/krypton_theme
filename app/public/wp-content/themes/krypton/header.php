@@ -77,9 +77,7 @@
 			<!-- Utility Actions: Functional Search Form with Label & Input -->
 			<div class="header-utility-actions">
 				<form role="search" method="get" class="header-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<label for="headerSearchInput" class="header-search-label font-inter">
-						<span class="header-search-label-text"><?php esc_html_e( 'Search', 'krypton' ); ?></span>
-					</label>
+					<label for="headerSearchInput" class="screen-reader-text"><?php esc_html_e( 'Search', 'krypton' ); ?></label>
 					<div class="header-search-box">
 						<input 
 							type="search" 
