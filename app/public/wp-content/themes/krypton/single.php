@@ -62,59 +62,22 @@ get_header();
 		// Reading Time
 		$reading_mins = function_exists( 'krypton_reading_time' ) ? krypton_reading_time( get_the_ID() ) : 10;
 
-		// Extract H2 headings from post content
-		$h2_headings = function_exists( 'krypton_get_post_h2_headings' ) ? krypton_get_post_h2_headings( get_the_ID() ) : array();
-		$is_demo_toc = false;
-
-		// If post has no H2 headings in content yet, provide the 21 mockup sections
-		if ( empty( $h2_headings ) ) {
-			$is_demo_toc = true;
-			$demo_headings = array(
-				'Overview',
-				'What is Gluco Reset',
-				'Rating',
-				'How We Tested',
-				'Who Should Buy',
-				'Manufacturer',
-				'Product Specifications',
-				'How Does It Work',
-				'How We Evaluated',
-				'Ingredients',
-				'Benefits',
-				'Safety',
-				'Side Effects',
-				'Uniqueness',
-				'How Effective is it?',
-				'How Much Does It Cost?',
-				'Customer Review',
-				"FAQ's",
-				'Contact Service',
-				'Final Verdict',
-				'Where To Buy?',
-			);
-			$h2_headings = array();
-			foreach ( $demo_headings as $idx => $dh ) {
-				$h2_headings[] = array(
-					'index' => $idx + 1,
-					'id'    => sanitize_title( $dh ),
-					'title' => $dh,
-				);
-			}
-		}
-
+		// Extract genuine H2 headings from post content
+		$h2_headings    = function_exists( 'krypton_get_post_h2_headings' ) ? krypton_get_post_h2_headings( get_the_ID() ) : array();
 		$total_sections = count( $h2_headings );
 
-		// Distribute headings evenly across up to 3 columns
-		$columns_count = min( 3, max( 1, (int) ceil( $total_sections / 7 ) ) );
-		$per_col       = (int) ceil( $total_sections / $columns_count );
-		$columns       = array_chunk( $h2_headings, $per_col > 0 ? $per_col : 1 );
-
-		// Column Header Labels
+		// Distribute headings evenly across up to 3 columns if headings exist
+		$columns       = array();
 		$column_titles = array(
 			0 => __( 'OVERVIEW', 'krypton' ),
 			1 => __( 'THE FORMULA', 'krypton' ),
 			2 => __( 'BUYING GUIDE', 'krypton' ),
 		);
+		if ( $total_sections > 0 ) {
+			$columns_count = min( 3, max( 1, (int) ceil( $total_sections / 7 ) ) );
+			$per_col       = (int) ceil( $total_sections / $columns_count );
+			$columns       = array_chunk( $h2_headings, $per_col > 0 ? $per_col : 1 );
+		}
 		?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'krypton-single-post' ); ?>>
 			
@@ -224,6 +187,7 @@ get_header();
 				</div>
 			</header>
 
+			<?php if ( ! empty( $h2_headings ) ) : ?>
 			<!-- 4. Table of Contents Section (In-Page Static Card - Collapsed at First) -->
 			<section class="krypton-toc-section krypton-container" id="kryptonTocSection" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
 				<div id="krypton-toc" class="krypton-toc-card is-collapsed">
@@ -277,7 +241,7 @@ get_header();
 				</div>
 			</section>
 
-			<!-- 6. Floating Sticky Table of Contents Bar (Fixed Docked Below Site Header on Scroll) -->
+			<!-- 5. Floating Sticky Table of Contents Bar (Fixed Docked Below Site Header on Scroll) -->
 			<aside id="kryptonStickyTocBar" class="krypton-sticky-toc-bar font-inter" aria-label="<?php esc_attr_e( 'Sticky Table of Contents', 'krypton' ); ?>" aria-hidden="true">
 				<div class="krypton-container sticky-toc-container">
 					<div class="sticky-toc-pill" id="stickyTocPill">
@@ -340,33 +304,13 @@ get_header();
 					</div>
 				</div>
 			</aside>
+			<?php endif; ?>
 
 			<!-- Single Post Body Content -->
 			<div class="krypton-container single-body-container">
 				<div class="entry-content single-article-content font-inter">
 					<?php
 					the_content();
-
-					// If the post has no H2 headings in content, render demo H2 sections so TOC anchor links work immediately
-					if ( $is_demo_toc ) :
-						?>
-						<div class="krypton-demo-sections">
-							<?php foreach ( $h2_headings as $h2_item ) : ?>
-								<div class="krypton-article-section" id="<?php echo esc_attr( $h2_item['id'] ); ?>">
-									<h2 class="font-montserrat"><?php echo esc_html( $h2_item['title'] ); ?></h2>
-									<p>
-										<?php
-										printf(
-											esc_html__( 'Comprehensive analysis and clinical evaluation regarding %s. In this section, our medical researchers and editorial contributors review published clinical trials, efficacy data, and real-world consumer experiences.', 'krypton' ),
-											esc_html( $h2_item['title'] )
-										);
-										?>
-									</p>
-								</div>
-							<?php endforeach; ?>
-						</div>
-						<?php
-					endif;
 
 					wp_link_pages(
 						array(

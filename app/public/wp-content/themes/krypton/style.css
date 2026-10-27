@@ -4226,24 +4226,7 @@ body.admin-bar .krypton-sticky-toc-bar {
   display: block;
 }
 
-/* Demo Sections (for posts without manual content) */
-.krypton-article-section {
-  padding-top: 1rem;
-  margin-bottom: 2.5rem;
-}
 
-.krypton-article-section h2 {
-  font-size: 1.625rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 1rem;
-  padding-top: 0.5rem;
-}
-
-.krypton-article-section p {
-  line-height: 1.8;
-  color: #475569;
-}
 
 /* Responsive Rules for Table of Contents */
 @media (max-width: 1024px) {
