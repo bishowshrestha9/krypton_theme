@@ -1886,11 +1886,11 @@ blockquote {
 /* Category Title (Montserrat SemiBold) */
 .category-card-title {
   font-family: 'Montserrat', var(--font-family-heading), sans-serif !important;
-  font-size: 16.5px;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: #111827;
   line-height: 1.35;
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
   text-align: center;
   transition: color var(--transition-fast);
 }
@@ -1902,11 +1902,11 @@ blockquote {
 /* Category Description (Inter Regular) */
 .category-card-description {
   font-family: 'Inter', var(--font-family-sans), sans-serif !important;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 400;
   line-height: 1.55;
   color: #555555;
-  margin: 0 0 18px 0;
+  margin: 0 0 20px 0;
   text-align: center;
   flex-grow: 1;
   display: -webkit-box;
@@ -1929,23 +1929,15 @@ blockquote {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
   font-family: 'Montserrat', var(--font-family-heading), sans-serif;
   font-size: 12.5px;
   font-weight: 600;
   color: var(--color-primary);
   background-color: #F0F6F3;
-  padding: 7px 18px;
+  padding: 8px 22px;
   border-radius: 999px;
   border: 1px solid rgba(110, 165, 144, 0.25);
   transition: all var(--transition-normal);
-}
-
-.category-read-more-btn svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  transition: transform var(--transition-fast);
 }
 
 .clinical-category-card:hover .category-read-more-btn {
@@ -1953,10 +1945,6 @@ blockquote {
   color: #FFFFFF;
   border-color: var(--color-primary);
   box-shadow: 0 4px 12px rgba(110, 165, 144, 0.28);
-}
-
-.clinical-category-card:hover .category-read-more-btn svg {
-  transform: translateX(4px);
 }
 
 .clinical-category-card.is-highlighted .category-read-more-btn {

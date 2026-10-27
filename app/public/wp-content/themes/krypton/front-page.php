@@ -199,15 +199,6 @@ if ( ! empty( $clinical_categories ) ) :
 		<div class="clinical-categories-grid">
 			<?php foreach ( $clinical_categories as $index => $category ) : ?>
 				<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" class="clinical-category-card<?php echo ( 0 === $index ) ? ' is-highlighted' : ''; ?>">
-					<!-- Circular Icon / Avatar Wrapper -->
-					<div class="category-icon-wrapper">
-						<?php
-						if ( function_exists( 'krypton_render_category_icon' ) ) {
-							krypton_render_category_icon( $category );
-						}
-						?>
-					</div>
-
 					<!-- Dynamic Category Name -->
 					<h3 class="category-card-title">
 						<?php echo esc_html( $category->name ); ?>
@@ -239,10 +230,6 @@ if ( ! empty( $clinical_categories ) ) :
 					<div class="category-card-footer">
 						<span class="category-read-more-btn">
 							<?php esc_html_e( 'Read More', 'krypton' ); ?>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<line x1="5" y1="12" x2="19" y2="12"></line>
-								<polyline points="12 5 19 12 12 19"></polyline>
-							</svg>
 						</span>
 					</div>
 				</a>
