@@ -311,6 +311,12 @@ function krypton_render_category_icon( $category ) {
 	}
 }
 
-
-
-
+/**
+ * Configure search results pagination: set 12 posts per page for clean 3-column grid layout.
+ */
+function krypton_search_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
+		$query->set( 'posts_per_page', 12 );
+	}
+}
+add_action( 'pre_get_posts', 'krypton_search_posts_per_page' );
