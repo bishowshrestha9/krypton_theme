@@ -72,32 +72,98 @@ if ( ! empty( $raw_credentials ) ) {
 	if ( is_array( $raw_credentials ) ) {
 		foreach ( $raw_credentials as $item ) {
 			if ( is_array( $item ) ) {
-				$deg  = ! empty( $item['degree'] ) ? $item['degree'] : ( ! empty( $item['title'] ) ? $item['title'] : '' );
-				$inst = ! empty( $item['institution'] ) ? $item['institution'] : ( ! empty( $item['school'] ) ? $item['school'] : '' );
-				if ( $deg || $inst ) {
+				$t = ! empty( $item['institution'] ) ? $item['institution'] : ( ! empty( $item['title'] ) ? $item['title'] : ( ! empty( $item['degree'] ) ? $item['degree'] : '' ) );
+				$s = ! empty( $item['degree'] ) && $t !== $item['degree'] ? $item['degree'] : ( ! empty( $item['subtitle'] ) ? $item['subtitle'] : ( ! empty( $item['school'] ) ? $item['school'] : '' ) );
+				if ( $t || $s ) {
+					$clean_t = trim( wp_strip_all_tags( html_entity_decode( $t, ENT_QUOTES, 'UTF-8' ) ) );
+					$clean_s = trim( wp_strip_all_tags( html_entity_decode( $s, ENT_QUOTES, 'UTF-8' ) ) );
 					$credentials[] = array(
-						'degree'      => $deg,
-						'institution' => $inst,
+						'title'       => $clean_t,
+						'subtitle'    => $clean_s,
+						'degree'      => $clean_t,
+						'institution' => $clean_s,
 					);
 				}
 			} elseif ( is_string( $item ) && trim( $item ) !== '' ) {
-				$parts = explode( '-', $item, 2 );
-				$credentials[] = array(
-					'degree'      => trim( $parts[0] ),
-					'institution' => isset( $parts[1] ) ? trim( $parts[1] ) : '',
-				);
+				$clean = trim( wp_strip_all_tags( html_entity_decode( $item, ENT_QUOTES, 'UTF-8' ) ) );
+				$parts = preg_split( '/\s*[-|–—]\s*/', $clean, 2 );
+				$t     = trim( $parts[0] );
+				$s     = isset( $parts[1] ) ? trim( $parts[1] ) : '';
+				if ( $t || $s ) {
+					$credentials[] = array(
+						'title'       => $t,
+						'subtitle'    => $s,
+						'degree'      => $t,
+						'institution' => $s,
+					);
+				}
 			}
 		}
 	} elseif ( is_string( $raw_credentials ) ) {
-		$lines = preg_split( '/\r\n|\r|\n/', trim( $raw_credentials ) );
-		foreach ( $lines as $line ) {
-			$line = trim( $line );
-			if ( ! empty( $line ) ) {
-				$parts = preg_split( '/\s*[-|–]\s*/', $line, 2 );
+		// Normalize HTML paragraph / line break tags into newlines
+		$normalized = preg_replace( '/<br\s*\/?>/i', "\n", $raw_credentials );
+		$normalized = preg_replace( '/<\/(p|div|li)>/i', "\n", $normalized );
+
+		// Check if credentials use <strong> tags for institution/title separation
+		if ( preg_match( '/<strong[^>]*>(.*?)<\/strong>/is', $normalized ) ) {
+			preg_match_all( '/<strong[^>]*>(.*?)<\/strong>(.*?)(?=(?:<strong|$))/is', $normalized, $matches, PREG_SET_ORDER );
+			if ( ! empty( $matches ) ) {
+				foreach ( $matches as $m ) {
+					$title    = trim( wp_strip_all_tags( html_entity_decode( $m[1], ENT_QUOTES, 'UTF-8' ) ) );
+					$subtitle = trim( wp_strip_all_tags( html_entity_decode( $m[2], ENT_QUOTES, 'UTF-8' ) ) );
+					$subtitle = trim( preg_replace( '/^[\s\-–—:]+/', '', $subtitle ) );
+					if ( ! empty( $title ) || ! empty( $subtitle ) ) {
+						$credentials[] = array(
+							'title'       => $title,
+							'subtitle'    => $subtitle,
+							'degree'      => $title,
+							'institution' => $subtitle,
+						);
+					}
+				}
+			}
+		}
+
+		// Fallback line-by-line parsing if not already parsed
+		if ( empty( $credentials ) ) {
+			$lines = preg_split( '/\r\n|\r|\n/', trim( $normalized ) );
+			$clean_lines = array();
+			foreach ( $lines as $l ) {
+				$clean = trim( wp_strip_all_tags( html_entity_decode( $l, ENT_QUOTES, 'UTF-8' ) ) );
+				if ( ! empty( $clean ) ) {
+					$clean_lines[] = $clean;
+				}
+			}
+
+			$count = count( $clean_lines );
+			if ( $count === 2 ) {
 				$credentials[] = array(
-					'degree'      => trim( $parts[0] ),
-					'institution' => isset( $parts[1] ) ? trim( $parts[1] ) : '',
+					'title'       => $clean_lines[0],
+					'subtitle'    => $clean_lines[1],
+					'degree'      => $clean_lines[0],
+					'institution' => $clean_lines[1],
 				);
+			} elseif ( $count > 0 && $count % 2 === 0 ) {
+				for ( $i = 0; $i < $count; $i += 2 ) {
+					$credentials[] = array(
+						'title'       => $clean_lines[ $i ],
+						'subtitle'    => $clean_lines[ $i + 1 ],
+						'degree'      => $clean_lines[ $i ],
+						'institution' => $clean_lines[ $i + 1 ],
+					);
+				}
+			} else {
+				foreach ( $clean_lines as $line ) {
+					$parts = preg_split( '/\s*[-|–—]\s*/', $line, 2 );
+					$t     = trim( $parts[0] );
+					$s     = isset( $parts[1] ) ? trim( $parts[1] ) : '';
+					$credentials[] = array(
+						'title'       => $t,
+						'subtitle'    => $s,
+						'degree'      => $t,
+						'institution' => $s,
+					);
+				}
 			}
 		}
 	}
