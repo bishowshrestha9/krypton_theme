@@ -3328,6 +3328,104 @@ blockquote {
   border-radius: var(--radius-md);
 }
 
+/* Center Alignment & Media in Post Content (Buttons, Images, Reusable Blocks) */
+.entry-content [style*="text-align: center" i],
+.entry-content [style*="text-align:center" i],
+.entry-content [align="center" i],
+.entry-content center,
+.entry-content .has-text-align-center,
+.entry-content .aligncenter,
+.entry-content figure.aligncenter,
+.entry-content div.aligncenter,
+.single-article-content [style*="text-align: center" i],
+.single-article-content [style*="text-align:center" i],
+.single-article-content [align="center" i],
+.single-article-content center,
+.single-article-content .has-text-align-center,
+.single-article-content .aligncenter,
+.single-article-content figure.aligncenter,
+.single-article-content div.aligncenter {
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.entry-content [style*="text-align: center" i] a,
+.entry-content [style*="text-align:center" i] a,
+.entry-content [align="center" i] a,
+.entry-content center a,
+.entry-content .has-text-align-center a,
+.entry-content .aligncenter a,
+.single-article-content [style*="text-align: center" i] a,
+.single-article-content [style*="text-align:center" i] a,
+.single-article-content [align="center" i] a,
+.single-article-content center a,
+.single-article-content .has-text-align-center a,
+.single-article-content .aligncenter a {
+  display: inline-block !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.entry-content [style*="text-align: center" i] img,
+.entry-content [style*="text-align:center" i] img,
+.entry-content [align="center" i] img,
+.entry-content center img,
+.entry-content .has-text-align-center img,
+.entry-content .aligncenter img,
+.entry-content img.aligncenter,
+.entry-content figure.aligncenter img,
+.single-article-content [style*="text-align: center" i] img,
+.single-article-content [style*="text-align:center" i] img,
+.single-article-content [align="center" i] img,
+.single-article-content center img,
+.single-article-content .has-text-align-center img,
+.single-article-content .aligncenter img,
+.single-article-content img.aligncenter,
+.single-article-content figure.aligncenter img {
+  display: inline-block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  vertical-align: middle;
+}
+
+/* WordPress Image Block Alignments */
+.entry-content .wp-block-image,
+.single-article-content .wp-block-image {
+  margin-bottom: 1.6rem;
+}
+
+.entry-content .wp-block-image.aligncenter,
+.single-article-content .wp-block-image.aligncenter,
+.entry-content .wp-block-image .aligncenter,
+.single-article-content .wp-block-image .aligncenter {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.entry-content .wp-block-image.aligncenter img,
+.single-article-content .wp-block-image.aligncenter img {
+  display: inline-block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.entry-content .wp-block-image.alignleft,
+.single-article-content .wp-block-image.alignleft {
+  float: left;
+  margin-right: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.entry-content .wp-block-image.alignright,
+.single-article-content .wp-block-image.alignright {
+  float: right;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .single-article-content h2,
 .single-article-content h3,
 .single-article-content h4 {
