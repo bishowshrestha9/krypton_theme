@@ -86,6 +86,75 @@ function krypton_reading_time( $post_id = null ) {
 }
 
 /**
+ * Extract H2 headings from post content.
+ *
+ * @param int|null $post_id Post ID.
+ * @return array Array of heading items.
+ */
+function krypton_get_post_h2_headings( $post_id = null ) {
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+	$content = get_post_field( 'post_content', $post_id );
+	$headings = array();
+
+	if ( preg_match_all( '/<h2(.*?)>(.*?)<\/h2>/i', $content, $matches, PREG_SET_ORDER ) ) {
+		$index = 0;
+		foreach ( $matches as $match ) {
+			$index++;
+			$attrs = $match[1];
+			$title = wp_strip_all_tags( $match[2] );
+			if ( preg_match( '/id=["\'](.*?)["\']/i', $attrs, $id_m ) ) {
+				$id = $id_m[1];
+			} else {
+				$id = sanitize_title( $title );
+				if ( empty( $id ) ) {
+					$id = 'section-' . $index;
+				}
+			}
+			$headings[] = array(
+				'index' => $index,
+				'id'    => $id,
+				'title' => $title,
+			);
+		}
+	}
+
+	return $headings;
+}
+
+/**
+ * Automatically inject unique IDs into <h2> headings inside post content for Table of Contents navigation.
+ *
+ * @param string $content Post content.
+ * @return string Modified content with heading IDs.
+ */
+function krypton_add_ids_to_h2( $content ) {
+	if ( is_singular( 'post' ) ) {
+		$index = 0;
+		$content = preg_replace_callback(
+			'/<h2(.*?)>(.*?)<\/h2>/i',
+			function( $matches ) use ( &$index ) {
+				$index++;
+				$attrs = $matches[1];
+				$title = wp_strip_all_tags( $matches[2] );
+				if ( ! preg_match( '/id=["\'](.*?)["\']/i', $attrs ) ) {
+					$id = sanitize_title( $title );
+					if ( empty( $id ) ) {
+						$id = 'section-' . $index;
+					}
+					$attrs .= ' id="' . esc_attr( $id ) . '"';
+				}
+				return '<h2' . $attrs . '>' . $matches[2] . '</h2>';
+			},
+			$content
+		);
+	}
+	return $content;
+}
+add_filter( 'the_content', 'krypton_add_ids_to_h2', 20 );
+
+/**
  * Register Krypton Hero Customizer settings.
  *
  * @param WP_Customize_Manager $wp_customize Customizer manager.
