@@ -221,10 +221,30 @@ while ( have_posts() ) :
 									<?php endif; ?>
 								</div>
 
-								<?php if ( ! empty( $cat_url ) ) : ?>
+								<?php
+								$total_posts_count = 0;
+								if ( ! empty( $cat_item['terms'] ) ) {
+									foreach ( $cat_item['terms'] as $term_obj ) {
+										$total_posts_count += (int) $term_obj->count;
+									}
+								}
+								if ( ! empty( $cat_url ) ) :
+								?>
 									<div class="category-showcase-action">
 										<a href="<?php echo esc_url( $cat_url ); ?>" class="category-view-all-btn font-inter">
-											<span><?php esc_html_e( 'View all reviews', 'krypton' ); ?></span>
+											<span>
+												<?php
+												if ( $total_posts_count > 0 ) {
+													printf(
+														/* translators: %d: number of reviews */
+														esc_html__( 'View all %d reviews', 'krypton' ),
+														(int) $total_posts_count
+													);
+												} else {
+													esc_html_e( 'View all reviews', 'krypton' );
+												}
+												?>
+											</span>
 											<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 												<line x1="5" y1="12" x2="19" y2="12"></line>
 												<polyline points="12 5 19 12 12 19"></polyline>

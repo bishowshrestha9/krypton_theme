@@ -137,8 +137,16 @@ $tint_colors  = array( '#1f1b34', '#36391d', '#1a273e', '#2c1e2f', '#1b322c' );
 					the_posts_pagination(
 						array(
 							'mid_size'  => 2,
-							'prev_text' => __( '&larr; Previous', 'krypton' ),
-							'next_text' => __( 'Next &rarr;', 'krypton' ),
+							'prev_text' => sprintf(
+								'%s <span>%s</span>',
+								'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+								esc_html__( 'Previous', 'krypton' )
+							),
+							'next_text' => sprintf(
+								'<span>%s</span> %s',
+								esc_html__( 'Next', 'krypton' ),
+								'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>'
+							),
 						)
 					);
 					?>

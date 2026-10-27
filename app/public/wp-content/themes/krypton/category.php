@@ -121,12 +121,25 @@ $card_tint_colors = array( '#1f1b34', '#36391d', '#1a273e', '#2c1e2f', '#1b322c'
 			
 			<!-- Category Page Header -->
 			<div class="category-content-header">
-				<h1 class="category-heading-title">
-					<?php
-					/* translators: %s: Category Name */
-					printf( esc_html__( 'Article from “%s” Category', 'krypton' ), esc_html( $current_title ) );
-					?>
-				</h1>
+				<div class="category-title-group">
+					<h1 class="category-heading-title font-montserrat">
+						<?php
+						/* translators: %s: Category Name */
+						printf( esc_html__( 'Articles from “%s” Category', 'krypton' ), esc_html( html_entity_decode( $current_title ) ) );
+						?>
+					</h1>
+					<?php global $wp_query; if ( isset( $wp_query->found_posts ) && $wp_query->found_posts > 0 ) : ?>
+						<span class="category-count-badge font-inter">
+							<?php
+							printf(
+								/* translators: %s: number of articles */
+								_n( '%s article', '%s articles', (int) $wp_query->found_posts, 'krypton' ),
+								number_format_i18n( (int) $wp_query->found_posts )
+							);
+							?>
+						</span>
+					<?php endif; ?>
+				</div>
 
 				<!-- Category Switcher Dropdown -->
 				<?php if ( ! empty( $all_categories ) ) : ?>
@@ -150,6 +163,12 @@ $card_tint_colors = array( '#1f1b34', '#36391d', '#1a273e', '#2c1e2f', '#1b322c'
 				</div>
 				<?php endif; ?>
 			</div>
+
+			<?php if ( category_description() ) : ?>
+				<div class="category-archive-desc font-inter">
+					<?php echo wp_kses_post( category_description() ); ?>
+				</div>
+			<?php endif; ?>
 
 			<!-- Divider line -->
 			<div class="category-header-divider" aria-hidden="true"></div>
@@ -216,8 +235,16 @@ $card_tint_colors = array( '#1f1b34', '#36391d', '#1a273e', '#2c1e2f', '#1b322c'
 					the_posts_pagination(
 						array(
 							'mid_size'  => 2,
-							'prev_text' => __( '&larr; Previous', 'krypton' ),
-							'next_text' => __( 'Next &rarr;', 'krypton' ),
+							'prev_text' => sprintf(
+								'%s <span>%s</span>',
+								'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+								esc_html__( 'Previous', 'krypton' )
+							),
+							'next_text' => sprintf(
+								'<span>%s</span> %s',
+								esc_html__( 'Next', 'krypton' ),
+								'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>'
+							),
 						)
 					);
 					?>
