@@ -3271,8 +3271,8 @@ span.page-numbers[aria-current="page"] {
   border-top: 1px solid #E5E7EB;
   border-bottom: 1px solid #E5E7EB;
   padding: 16px 0;
-  margin-top: 1.5rem;
-  margin-bottom: 2.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.35rem;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -3781,7 +3781,7 @@ span.page-numbers[aria-current="page"] {
   .single-author-meta-bar {
     padding: 14px 0;
     margin-top: 1.25rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.35rem;
     gap: 12px;
   }
 
@@ -3812,7 +3812,7 @@ span.page-numbers[aria-current="page"] {
 .krypton-toc-section {
   max-width: var(--container-max-width, 1200px);
   width: 100%;
-  margin: 0 auto 3rem auto;
+  margin: 0.35rem auto 0.5rem auto;
   padding-left: clamp(1rem, 3vw, 1.5rem);
   padding-right: clamp(1rem, 3vw, 1.5rem);
   box-sizing: border-box;
@@ -4246,7 +4246,7 @@ body.admin-bar .krypton-sticky-toc-bar {
 
 @media (max-width: 768px) {
   .krypton-toc-section {
-    margin-bottom: 2rem;
+    margin: 0.35rem auto 0.5rem auto;
   }
 
   .toc-header-bar {
