@@ -443,19 +443,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	var stickyTitleEl      = document.getElementById('stickyTocActiveSectionTitle');
 
 	var articleContent     = document.querySelector('.single-article-content');
-	var siteHeader         = document.querySelector('.site-header');
 
 	// All TOC links across both in-page and sticky dropdown
 	var allTocLinks        = document.querySelectorAll('.toc-item-link');
 
-	// 1. Dynamic Site Header Height Calculation
-	function getHeaderHeight() {
-		var h = siteHeader ? siteHeader.offsetHeight : 110;
-		document.documentElement.style.setProperty('--site-header-height', h + 'px');
-		return h;
+	// 1. Get Top Offset (Accounts for WordPress admin bar if user is logged in)
+	function getTopOffset() {
+		var adminBar = document.getElementById('wpadminbar');
+		return (adminBar && window.getComputedStyle(adminBar).position === 'fixed') ? adminBar.offsetHeight : 0;
 	}
-	getHeaderHeight();
-	window.addEventListener('resize', getHeaderHeight, { passive: true });
 
 	// 2. In-Page TOC Manual Toggle (Hide / Show)
 	if (inPageToggleBtn && inPageTocCard) {
@@ -473,14 +469,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		var isTicking = false;
 
 		function updateStickyBarVisibility() {
-			var headerH = getHeaderHeight();
+			var topOffset = getTopOffset();
 			var tocRect = inPageTocSection.getBoundingClientRect();
 			var contentRect = articleContent ? articleContent.getBoundingClientRect() : null;
 
-			// Trigger sticky bar as soon as the in-page TOC bottom scrolls past the bottom of the fixed header
-			var isPastInPageToc = (tocRect.bottom < headerH);
+			// Trigger sticky bar as soon as the in-page TOC bottom scrolls past the top of the viewport
+			var isPastInPageToc = (tocRect.bottom < topOffset + 10);
 			// Hide sticky bar when user reaches the bottom of the article
-			var isBeforeArticleEnd = contentRect ? (contentRect.bottom > headerH + 80) : true;
+			var isBeforeArticleEnd = contentRect ? (contentRect.bottom > topOffset + 80) : true;
 
 			if (isPastInPageToc && isBeforeArticleEnd) {
 				stickyBar.classList.add('is-visible');
@@ -546,9 +542,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					if (stickyDropdownBtn) stickyDropdownBtn.setAttribute('aria-expanded', 'false');
 				}
 
-				var headerH = getHeaderHeight();
-				// Offset takes into account site header + sticky pill + breathing room
-				var totalOffset = headerH + 75;
+				var topOffset = getTopOffset();
+				var stickyH = stickyPill ? stickyPill.offsetHeight : 52;
+				// Offset takes into account top/admin bar + sticky pill + breathing room
+				var totalOffset = topOffset + stickyH + 16;
 				var elementPosition = targetEl.getBoundingClientRect().top;
 				var offsetPosition = elementPosition + window.pageYOffset - totalOffset;
 
@@ -609,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			});
 		}, {
-			rootMargin: '-110px 0px -60% 0px',
+			rootMargin: '-70px 0px -60% 0px',
 			threshold: 0
 		});
 

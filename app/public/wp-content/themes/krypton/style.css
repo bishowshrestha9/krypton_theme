@@ -3909,11 +3909,11 @@ span.page-numbers[aria-current="page"] {
 
 .krypton-sticky-toc-bar {
   position: fixed;
-  top: calc(var(--site-header-height, 116px) + 8px);
+  top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 95;
+  z-index: 999;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -3921,6 +3921,17 @@ span.page-numbers[aria-current="page"] {
   transition: opacity 0.24s ease, 
               transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
               visibility 0.24s;
+}
+
+/* Offset for WordPress Admin Bar when logged in */
+body.admin-bar .krypton-sticky-toc-bar {
+  top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+  body.admin-bar .krypton-sticky-toc-bar {
+    top: 46px;
+  }
 }
 
 .krypton-sticky-toc-bar.is-visible {
