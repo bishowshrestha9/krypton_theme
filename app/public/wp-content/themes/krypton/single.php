@@ -252,52 +252,27 @@ get_header();
 				</div>
 			</header>
 
-			<!-- 5. Table of Contents Section (Sticky & Scannable H2 Headings) -->
-			<section class="krypton-toc-section krypton-container" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
+			<!-- 5. Table of Contents Section (In-Page Static Card) -->
+			<section class="krypton-toc-section krypton-container" id="kryptonTocSection" aria-label="<?php esc_attr_e( 'Table of Contents', 'krypton' ); ?>">
 				<div id="krypton-toc" class="krypton-toc-card">
 					
-					<!-- Header Containers with Smooth Cross-Fade -->
-					<div class="toc-headers-container">
-						<!-- 1. Full Expanded Header Bar -->
-						<div class="toc-header-bar toc-expanded-header">
-							<div class="toc-title-group">
-								<h2 class="toc-main-title font-montserrat"><?php esc_html_e( 'Table of Content', 'krypton' ); ?></h2>
-								<span class="toc-meta-info font-inter">
-									<?php echo sprintf( esc_html__( '%d sections · %d min read', 'krypton' ), $total_sections, (int) $reading_mins ); ?>
-								</span>
-							</div>
-							<button type="button" class="toc-toggle-btn font-inter" id="tocToggleBtn" aria-expanded="true" aria-controls="tocColumnsGrid">
-								<span class="toc-toggle-text"><?php esc_html_e( 'Hide', 'krypton' ); ?></span>
-								<svg class="toc-toggle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-									<polyline points="18 15 12 9 6 15"></polyline>
-								</svg>
-							</button>
+					<!-- Header Bar -->
+					<div class="toc-header-bar">
+						<div class="toc-title-group">
+							<h2 class="toc-main-title font-montserrat"><?php esc_html_e( 'Table of Content', 'krypton' ); ?></h2>
+							<span class="toc-meta-info font-inter">
+								<?php echo sprintf( esc_html__( '%d sections · %d min read', 'krypton' ), $total_sections, (int) $reading_mins ); ?>
+							</span>
 						</div>
-
-						<!-- 2. Collapsed Sticky Header Bar (Shown when hidden/sticky as in design mockup) -->
-						<div class="toc-header-bar toc-collapsed-header">
-							<div class="toc-collapsed-left">
-								<span class="toc-collapsed-badge font-inter"><?php esc_html_e( 'CONTENTS', 'krypton' ); ?></span>
-								<span class="toc-collapsed-v-divider" aria-hidden="true"></span>
-								<span class="toc-collapsed-counter font-inter">
-									<span id="tocActiveNumber">01</span> / <?php echo sprintf( '%02d', $total_sections ); ?>
-								</span>
-								<span id="tocActiveSectionTitle" class="toc-collapsed-section-title font-inter">
-									<?php echo esc_html( ! empty( $h2_headings[0]['title'] ) ? $h2_headings[0]['title'] : __( 'Overview', 'krypton' ) ); ?>
-								</span>
-							</div>
-							<div class="toc-collapsed-right">
-								<button type="button" class="toc-all-sections-btn font-inter" id="tocAllSectionsBtn" aria-expanded="false" aria-controls="tocColumnsGrid">
-									<span class="toc-all-sections-text"><?php esc_html_e( 'All sections', 'krypton' ); ?></span>
-									<svg class="toc-all-sections-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-										<polyline points="6 9 12 15 18 9"></polyline>
-									</svg>
-								</button>
-							</div>
-						</div>
+						<button type="button" class="toc-toggle-btn font-inter" id="tocToggleBtn" aria-expanded="true" aria-controls="tocColumnsGrid">
+							<span class="toc-toggle-text"><?php esc_html_e( 'Hide', 'krypton' ); ?></span>
+							<svg class="toc-toggle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<polyline points="18 15 12 9 6 15"></polyline>
+							</svg>
+						</button>
 					</div>
 
-					<!-- 3. TOC 3-Columns Grid (Smooth Grid Height Transition) -->
+					<!-- TOC 3-Columns Grid (Smooth Height Transition on Manual Toggle) -->
 					<div class="toc-columns-wrapper" id="tocColumnsWrapper">
 						<div class="toc-columns-grid" id="tocColumnsGrid">
 							<?php foreach ( $columns as $col_index => $col_items ) : ?>
@@ -327,11 +302,72 @@ get_header();
 						</div>
 					</div>
 
-					<!-- 4. Bottom Green Accent Line -->
-					<div class="toc-bottom-accent-line" aria-hidden="true"></div>
-
 				</div>
 			</section>
+
+			<!-- 6. Floating Sticky Table of Contents Bar (Fixed Docked Below Site Header on Scroll) -->
+			<aside id="kryptonStickyTocBar" class="krypton-sticky-toc-bar font-inter" aria-label="<?php esc_attr_e( 'Sticky Table of Contents', 'krypton' ); ?>" aria-hidden="true">
+				<div class="krypton-container sticky-toc-container">
+					<div class="sticky-toc-pill" id="stickyTocPill">
+						
+						<!-- Sticky Bar Top Row (CONTENTS | 01 / 21 Section Title ... All sections ⌵) -->
+						<div class="sticky-toc-bar-content">
+							<div class="sticky-toc-left">
+								<span class="toc-collapsed-badge font-inter"><?php esc_html_e( 'CONTENTS', 'krypton' ); ?></span>
+								<span class="toc-collapsed-v-divider" aria-hidden="true"></span>
+								<span class="toc-collapsed-counter font-inter">
+									<span id="stickyTocActiveNumber">01</span> / <?php echo sprintf( '%02d', $total_sections ); ?>
+								</span>
+								<span id="stickyTocActiveSectionTitle" class="toc-collapsed-section-title font-inter">
+									<?php echo esc_html( ! empty( $h2_headings[0]['title'] ) ? $h2_headings[0]['title'] : __( 'Overview', 'krypton' ) ); ?>
+								</span>
+							</div>
+							<div class="sticky-toc-right">
+								<button type="button" class="toc-all-sections-btn font-inter" id="stickyTocDropdownBtn" aria-expanded="false" aria-controls="stickyTocDropdown">
+									<span class="toc-all-sections-text"><?php esc_html_e( 'All sections', 'krypton' ); ?></span>
+									<svg class="toc-all-sections-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+										<polyline points="6 9 12 15 18 9"></polyline>
+									</svg>
+								</button>
+							</div>
+						</div>
+
+						<!-- Bottom Accent Line in Brand Green -->
+						<div class="sticky-toc-accent-line" aria-hidden="true"></div>
+
+						<!-- Sticky Sections Dropdown Panel (Overlay) -->
+						<div class="sticky-toc-dropdown-panel" id="stickyTocDropdown">
+							<div class="toc-columns-grid">
+								<?php foreach ( $columns as $col_index => $col_items ) : ?>
+									<div class="toc-column">
+										<div class="toc-column-header font-inter">
+											<?php echo esc_html( isset( $column_titles[ $col_index ] ) ? $column_titles[ $col_index ] : sprintf( __( 'SECTION %d', 'krypton' ), $col_index + 1 ) ); ?>
+										</div>
+										<nav class="toc-items-nav">
+											<ul class="toc-items-list">
+												<?php foreach ( $col_items as $item ) : 
+													$is_first = ( 1 === (int) $item['index'] );
+												?>
+													<li class="toc-item">
+														<a href="#<?php echo esc_attr( $item['id'] ); ?>" class="toc-item-link font-inter <?php echo $is_first ? 'is-active' : ''; ?>" data-target="<?php echo esc_attr( $item['id'] ); ?>" data-index="<?php echo sprintf( '%02d', $item['index'] ); ?>" data-title="<?php echo esc_attr( $item['title'] ); ?>">
+															<span class="toc-item-number"><?php echo sprintf( '%02d', $item['index'] ); ?></span>
+															<span class="toc-item-text"><?php echo esc_html( $item['title'] ); ?></span>
+															<svg class="toc-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+																<polyline points="9 18 15 12 9 6"></polyline>
+															</svg>
+														</a>
+													</li>
+												<?php endforeach; ?>
+											</ul>
+										</nav>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</aside>
 
 			<!-- Single Post Body Content -->
 			<div class="krypton-container single-body-container">
@@ -392,92 +428,141 @@ get_header();
 	?>
 </main>
 
-<!-- Table of Contents Sticky, Collapse, and ScrollSpy Script -->
+<!-- Table of Contents Toggle, Sticky Bar, and ScrollSpy Script -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-	var tocSection         = document.querySelector('.krypton-toc-section');
-	var tocCard            = document.getElementById('krypton-toc');
-	var toggleBtn          = document.getElementById('tocToggleBtn');
-	var allSectionsBtn     = document.getElementById('tocAllSectionsBtn');
-	var activeNumberEl     = document.getElementById('tocActiveNumber');
-	var activeSectionTitle = document.getElementById('tocActiveSectionTitle');
-	var tocLinks           = document.querySelectorAll('.toc-item-link');
+	var inPageTocSection   = document.getElementById('kryptonTocSection');
+	var inPageTocCard      = document.getElementById('krypton-toc');
+	var inPageToggleBtn    = document.getElementById('tocToggleBtn');
+	var inPageToggleText   = inPageToggleBtn ? inPageToggleBtn.querySelector('.toc-toggle-text') : null;
 
-	// Helper: Expand TOC
-	function expandTOC() {
-		if (!tocCard) return;
-		tocCard.classList.remove('is-collapsed');
-		tocCard.classList.add('is-manually-expanded');
-		if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
-		if (allSectionsBtn) allSectionsBtn.setAttribute('aria-expanded', 'true');
+	var stickyBar          = document.getElementById('kryptonStickyTocBar');
+	var stickyPill         = document.getElementById('stickyTocPill');
+	var stickyDropdownBtn  = document.getElementById('stickyTocDropdownBtn');
+	var stickyNumberEl     = document.getElementById('stickyTocActiveNumber');
+	var stickyTitleEl      = document.getElementById('stickyTocActiveSectionTitle');
+
+	var articleContent     = document.querySelector('.single-article-content');
+	var siteHeader         = document.querySelector('.site-header');
+
+	// All TOC links across both in-page and sticky dropdown
+	var allTocLinks        = document.querySelectorAll('.toc-item-link');
+
+	// 1. Dynamic Site Header Height Calculation
+	function getHeaderHeight() {
+		var h = siteHeader ? siteHeader.offsetHeight : 110;
+		document.documentElement.style.setProperty('--site-header-height', h + 'px');
+		return h;
 	}
+	getHeaderHeight();
+	window.addEventListener('resize', getHeaderHeight, { passive: true });
 
-	// Helper: Collapse / Hide TOC into compact bar
-	function collapseTOC() {
-		if (!tocCard) return;
-		tocCard.classList.add('is-collapsed');
-		tocCard.classList.remove('is-manually-expanded');
-		tocCard.classList.remove('is-dropdown-open');
-		if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
-		if (allSectionsBtn) allSectionsBtn.setAttribute('aria-expanded', 'false');
-	}
-
-	// 1. Hide Button Trigger (in expanded header)
-	if (toggleBtn) {
-		toggleBtn.addEventListener('click', function() {
-			collapseTOC();
-		});
-	}
-
-	// 2. All Sections Button Trigger (in collapsed bar)
-	if (allSectionsBtn && tocCard) {
-		allSectionsBtn.addEventListener('click', function(e) {
-			e.stopPropagation();
-			var isOpen = tocCard.classList.contains('is-dropdown-open');
-			if (isOpen) {
-				tocCard.classList.remove('is-dropdown-open');
-				allSectionsBtn.setAttribute('aria-expanded', 'false');
-			} else {
-				tocCard.classList.add('is-dropdown-open');
-				allSectionsBtn.setAttribute('aria-expanded', 'true');
+	// 2. In-Page TOC Manual Toggle (Hide / Show)
+	if (inPageToggleBtn && inPageTocCard) {
+		inPageToggleBtn.addEventListener('click', function() {
+			var isCollapsed = inPageTocCard.classList.toggle('is-collapsed');
+			inPageToggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+			if (inPageToggleText) {
+				inPageToggleText.textContent = isCollapsed ? '<?php echo esc_js( __( 'Show', 'krypton' ) ); ?>' : '<?php echo esc_js( __( 'Hide', 'krypton' ) ); ?>';
 			}
 		});
 	}
 
-	// 3. Smooth Scroll to Heading on TOC link click
-	tocLinks.forEach(function(link) {
+	// 3. Sticky Bar Visibility & Scroll Management (Zero layout shift, 100% flicker-free)
+	if (stickyBar && inPageTocSection) {
+		var isTicking = false;
+
+		function updateStickyBarVisibility() {
+			var headerH = getHeaderHeight();
+			var tocRect = inPageTocSection.getBoundingClientRect();
+			var contentRect = articleContent ? articleContent.getBoundingClientRect() : null;
+
+			// Trigger sticky bar as soon as the in-page TOC bottom scrolls past the bottom of the fixed header
+			var isPastInPageToc = (tocRect.bottom < headerH);
+			// Hide sticky bar when user reaches the bottom of the article
+			var isBeforeArticleEnd = contentRect ? (contentRect.bottom > headerH + 80) : true;
+
+			if (isPastInPageToc && isBeforeArticleEnd) {
+				stickyBar.classList.add('is-visible');
+				stickyBar.setAttribute('aria-hidden', 'false');
+			} else {
+				stickyBar.classList.remove('is-visible');
+				stickyBar.setAttribute('aria-hidden', 'true');
+				// Close dropdown if open
+				if (stickyPill) stickyPill.classList.remove('is-dropdown-open');
+				if (stickyDropdownBtn) stickyDropdownBtn.setAttribute('aria-expanded', 'false');
+			}
+			isTicking = false;
+		}
+
+		window.addEventListener('scroll', function() {
+			if (!isTicking) {
+				window.requestAnimationFrame(updateStickyBarVisibility);
+				isTicking = true;
+			}
+		}, { passive: true });
+
+		window.addEventListener('load', updateStickyBarVisibility);
+		updateStickyBarVisibility();
+	}
+
+	// 4. Sticky Bar Dropdown Toggle (All sections ⌵)
+	if (stickyDropdownBtn && stickyPill) {
+		stickyDropdownBtn.addEventListener('click', function(e) {
+			e.stopPropagation();
+			var isOpen = stickyPill.classList.toggle('is-dropdown-open');
+			stickyDropdownBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+		});
+
+		// Close dropdown when clicking outside
+		document.addEventListener('click', function(e) {
+			if (stickyPill.classList.contains('is-dropdown-open') && !stickyPill.contains(e.target)) {
+				stickyPill.classList.remove('is-dropdown-open');
+				stickyDropdownBtn.setAttribute('aria-expanded', 'false');
+			}
+		});
+
+		// Close on Escape key
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape' && stickyPill.classList.contains('is-dropdown-open')) {
+				stickyPill.classList.remove('is-dropdown-open');
+				stickyDropdownBtn.setAttribute('aria-expanded', 'false');
+			}
+		});
+	}
+
+	// 5. Smooth Scroll to Heading on Link Click (Both In-Page and Sticky Dropdown)
+	allTocLinks.forEach(function(link) {
 		link.addEventListener('click', function(e) {
 			var targetId = this.getAttribute('data-target');
 			if (!targetId) return;
 			var targetEl = document.getElementById(targetId);
 			if (targetEl) {
 				e.preventDefault();
-				var headerOffset = 110;
+				
+				// Close sticky dropdown if open
+				if (stickyPill) {
+					stickyPill.classList.remove('is-dropdown-open');
+					if (stickyDropdownBtn) stickyDropdownBtn.setAttribute('aria-expanded', 'false');
+				}
+
+				var headerH = getHeaderHeight();
+				// Offset takes into account site header + sticky pill + breathing room
+				var totalOffset = headerH + 75;
 				var elementPosition = targetEl.getBoundingClientRect().top;
-				var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+				var offsetPosition = elementPosition + window.pageYOffset - totalOffset;
 
 				window.scrollTo({
-					top: offsetPosition,
+					top: Math.max(0, offsetPosition),
 					behavior: 'smooth'
 				});
 
-				// Update active state in list
-				tocLinks.forEach(function(l) { l.classList.remove('is-active'); });
-				this.classList.add('is-active');
-
-				// Update collapsed bar indicators
+				// Highlight link
 				var itemIndex = this.getAttribute('data-index');
 				var itemTitle = this.getAttribute('data-title');
-				if (activeNumberEl && itemIndex) activeNumberEl.textContent = itemIndex;
-				if (activeSectionTitle && itemTitle) activeSectionTitle.textContent = itemTitle;
+				setActiveHeading(targetId, itemIndex, itemTitle);
 
-				// Close dropdown if open
-				if (tocCard) {
-					tocCard.classList.remove('is-dropdown-open');
-					if (allSectionsBtn) allSectionsBtn.setAttribute('aria-expanded', 'false');
-				}
-
-				// Update URL hash without jumping
+				// Update URL hash smoothly
 				if (history.pushState) {
 					history.pushState(null, null, '#' + targetId);
 				}
@@ -485,100 +570,51 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 
-	// 4. Automatically Hide TOC when entering Sticky position; restore when scrolled back up
-	if (tocSection && tocCard) {
-		var wasSticky = false;
-		var ticking = false;
-		var initialTop = 0;
-
-		function getInitialTop() {
-			if (!initialTop && !wasSticky) {
-				var rect = tocSection.getBoundingClientRect();
-				initialTop = rect.top + window.pageYOffset;
+	// Helper: Set Active Heading State across both in-page and sticky bar
+	function setActiveHeading(activeId, index, title) {
+		allTocLinks.forEach(function(link) {
+			if (link.getAttribute('data-target') === activeId) {
+				link.classList.add('is-active');
+			} else {
+				link.classList.remove('is-active');
 			}
-			return initialTop;
-		}
-
-		window.addEventListener('load', function() {
-			initialTop = 0;
-			getInitialTop();
 		});
-
-		window.addEventListener('resize', function() {
-			initialTop = 0;
-			getInitialTop();
-			updateStickyState();
-		}, { passive: true });
-
-		function updateStickyState() {
-			var top = getInitialTop();
-			if (!top) return;
-
-			var scrollY = window.pageYOffset;
-
-			// Sticky enter at 85px header threshold; generous 55px buffer exit threshold to eliminate cursor oscillation
-			var stickyEnter = top - 85;
-			var stickyExit  = top - 140;
-
-			if (scrollY > stickyEnter && !wasSticky) {
-				tocSection.classList.add('is-scrolled-sticky');
-				collapseTOC();
-				wasSticky = true;
-			} else if (scrollY < stickyExit && wasSticky) {
-				tocSection.classList.remove('is-scrolled-sticky');
-				expandTOC();
-				wasSticky = false;
-			}
-		}
-
-		window.addEventListener('scroll', function() {
-			if (!ticking) {
-				window.requestAnimationFrame(function() {
-					updateStickyState();
-					ticking = false;
-				});
-				ticking = true;
-			}
-		}, { passive: true });
-
-		window.requestAnimationFrame(updateStickyState);
+		if (stickyNumberEl && index) stickyNumberEl.textContent = index;
+		if (stickyTitleEl && title) stickyTitleEl.textContent = title;
 	}
 
-	// 5. ScrollSpy: Highlight active H2 and update collapsed bar as user reads down the page
-	var headingIds = [];
-	tocLinks.forEach(function(link) {
+	// 6. ScrollSpy: Highlight active H2 & update sticky bar indicator as reader scrolls
+	var headingElements = [];
+	allTocLinks.forEach(function(link) {
 		var id = link.getAttribute('data-target');
-		if (id && document.getElementById(id)) {
-			headingIds.push(id);
+		if (id) {
+			var el = document.getElementById(id);
+			if (el && headingElements.indexOf(el) === -1) {
+				headingElements.push(el);
+			}
 		}
 	});
 
-	if (headingIds.length > 0 && 'IntersectionObserver' in window) {
+	if (headingElements.length > 0 && 'IntersectionObserver' in window) {
 		var observer = new IntersectionObserver(function(entries) {
 			entries.forEach(function(entry) {
 				if (entry.isIntersecting) {
 					var activeId = entry.target.id;
-					tocLinks.forEach(function(link) {
-						if (link.getAttribute('data-target') === activeId) {
-							link.classList.add('is-active');
-							var itemIndex = link.getAttribute('data-index');
-							var itemTitle = link.getAttribute('data-title');
-							if (activeNumberEl && itemIndex) activeNumberEl.textContent = itemIndex;
-							if (activeSectionTitle && itemTitle) activeSectionTitle.textContent = itemTitle;
-						} else {
-							link.classList.remove('is-active');
-						}
-					});
+					var matchedLink = document.querySelector('.toc-item-link[data-target="' + activeId + '"]');
+					if (matchedLink) {
+						var itemIndex = matchedLink.getAttribute('data-index');
+						var itemTitle = matchedLink.getAttribute('data-title');
+						setActiveHeading(activeId, itemIndex, itemTitle);
+					}
 				}
 			});
 		}, {
-			rootMargin: '-100px 0px -55% 0px',
+			rootMargin: '-110px 0px -60% 0px',
 			threshold: 0
 		});
 
-		headingIds.forEach(function(id) {
-			var el = document.getElementById(id);
-			if (el) observer.observe(el);
+		headingElements.forEach(function(el) {
+			observer.observe(el);
 		});
 	}
 });

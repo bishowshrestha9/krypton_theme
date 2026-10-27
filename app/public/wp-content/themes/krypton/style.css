@@ -3780,9 +3780,10 @@ span.page-numbers[aria-current="page"] {
 }
 
 /* ==========================================================================
-   Table of Contents (TOC) Component (Design Matched & Sticky)
+   Table of Contents (TOC) Component (In-Page Static Card & Floating Sticky Bar)
    ========================================================================== */
 
+/* 1. In-Page TOC Section (Static in normal document flow - zero layout shifts) */
 .krypton-toc-section {
   max-width: var(--container-max-width, 1200px);
   width: 100%;
@@ -3790,10 +3791,8 @@ span.page-numbers[aria-current="page"] {
   padding-left: clamp(1rem, 3vw, 1.5rem);
   padding-right: clamp(1rem, 3vw, 1.5rem);
   box-sizing: border-box;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 85px;
-  z-index: 90;
+  position: relative;
+  z-index: 10;
 }
 
 .krypton-toc-card {
@@ -3803,228 +3802,31 @@ span.page-numbers[aria-current="page"] {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   position: relative;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transition: box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.28s ease, 
-              border-radius 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
-/* Elevated shadow and border when sticky */
-.krypton-toc-section.is-scrolled-sticky .krypton-toc-card {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border-color: #E2E8F0;
-  border-radius: 14px;
+.krypton-toc-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border-color: #CBD5E1;
 }
 
-/* 1. Header Containers & Smooth Grid-Stacked Cross-Fade Transition */
-.toc-headers-container {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
-  min-height: 58px;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #F1F5F9;
-  transition: border-bottom-color 0.24s ease;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-.krypton-toc-card.is-collapsed:not(.is-dropdown-open) .toc-headers-container {
-  border-bottom-color: transparent;
-}
-
-/* Both headers occupy the exact same grid space (transparent background to avoid ghosting) */
-.toc-expanded-header,
-.toc-collapsed-header {
-  grid-area: 1 / 1 / 2 / 2;
+/* In-Page Header Bar */
+.toc-header-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 14px 26px;
+  padding: 16px 26px;
   box-sizing: border-box;
-  background-color: transparent;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #F1F5F9;
+  transition: border-bottom-color 0.24s ease;
 }
 
-/* Expanded Header (Table of Content · X sections / Hide ^) */
-.toc-expanded-header {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition: opacity 0.22s ease, 
-              transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+.krypton-toc-card.is-collapsed .toc-header-bar {
+  border-bottom-color: transparent;
 }
 
-/* Collapsed Header (CONTENTS | 21 / 21 Section Title / All sections ⌵) */
-.toc-collapsed-header {
-  opacity: 0;
-  transform: translateY(6px);
-  pointer-events: none;
-  transition: opacity 0.22s ease, 
-              transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* When Collapsed (Smooth Switch to Collapsed Header without layout jump) */
-.krypton-toc-card.is-collapsed .toc-expanded-header {
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-}
-
-.krypton-toc-card.is-collapsed .toc-collapsed-header {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* 2. TOC Columns Wrapper (Hardware-Accelerated Smooth Height Transition) */
-.toc-columns-wrapper {
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-  overflow: hidden;
-  transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.22s ease,
-              border-color 0.24s ease;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.toc-columns-wrapper > .toc-columns-grid {
-  min-height: 0;
-  overflow: hidden;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateY(0);
-}
-
-/* Hide grid when collapsed and dropdown is not open */
-.krypton-toc-card.is-collapsed:not(.is-dropdown-open) .toc-columns-wrapper {
-  grid-template-rows: 0fr;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.krypton-toc-card.is-collapsed:not(.is-dropdown-open) .toc-columns-wrapper > .toc-columns-grid {
-  transform: translateY(-8px);
-}
-
-.krypton-toc-card.is-collapsed.is-dropdown-open .toc-columns-wrapper {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  pointer-events: auto;
-  border-top: 1px solid #F1F5F9;
-}
-
-.krypton-toc-card.is-collapsed.is-dropdown-open .toc-columns-wrapper > .toc-columns-grid {
-  transform: translateY(0);
-}
-
-.krypton-toc-card.is-collapsed.is-dropdown-open .toc-all-sections-chevron {
-  transform: rotate(180deg);
-}
-
-/* Green Bottom Accent Line (Smooth Fade & Sweep Slide) */
-.toc-bottom-accent-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2.5px;
-  background-color: var(--color-primary); /* #6EA590 */
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: opacity 0.24s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.krypton-toc-card.is-collapsed .toc-bottom-accent-line {
-  opacity: 1;
-  transform: scaleX(1);
-}
-
-/* Collapsed Header Elements */
-.toc-collapsed-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0;
-}
-
-.toc-collapsed-badge {
-  font-family: var(--font-family-sans);
-  font-size: 0.75rem; /* 12px */
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--color-primary); /* #6EA590 */
-  text-transform: uppercase;
-}
-
-.toc-collapsed-v-divider {
-  display: inline-block;
-  width: 1px;
-  height: 14px;
-  background-color: #E2E8F0;
-  margin: 0 14px;
-}
-
-.toc-collapsed-counter {
-  font-family: var(--font-family-sans);
-  font-size: 0.8125rem; /* 13px */
-  font-weight: 600;
-  color: #94A3B8;
-  margin-right: 14px;
-}
-
-.toc-collapsed-section-title {
-  font-family: var(--font-family-sans);
-  font-size: 0.9375rem; /* 15px */
-  font-weight: 600;
-  color: #111827;
-  line-height: 1.3;
-}
-
-.toc-collapsed-right {
-  display: flex;
-  align-items: center;
-}
-
-.toc-all-sections-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 10px;
-  background: transparent;
-  border: none;
-  color: #374151;
-  font-family: var(--font-family-sans);
-  font-size: 0.84375rem; /* 13.5px */
-  font-weight: 500;
-  cursor: pointer;
-  transition: color var(--transition-fast);
-  outline: none;
-}
-
-.toc-all-sections-btn:hover {
-  color: var(--color-primary);
-}
-
-.toc-all-sections-chevron {
-  stroke: currentColor;
-  transition: transform 0.25s ease;
-}
-
-
-/* Expanded Title & Toggle Elements */
 .toc-title-group {
   display: flex;
   align-items: baseline;
@@ -4076,7 +3878,201 @@ span.page-numbers[aria-current="page"] {
   transition: transform 0.25s ease;
 }
 
-/* 2. TOC 3-Columns Grid */
+.krypton-toc-card.is-collapsed .toc-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* 2. TOC Columns Wrapper (Smooth Grid Height Transition) */
+.toc-columns-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  overflow: hidden;
+  transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.24s ease;
+}
+
+.toc-columns-wrapper > .toc-columns-grid {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.krypton-toc-card.is-collapsed .toc-columns-wrapper {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Floating Sticky Table of Contents Bar (Slides below Header - 100% Flicker-Free)
+   ========================================================================== */
+
+.krypton-sticky-toc-bar {
+  position: fixed;
+  top: calc(var(--site-header-height, 116px) + 8px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.24s ease, 
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.24s;
+}
+
+.krypton-sticky-toc-bar.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.sticky-toc-container {
+  max-width: var(--container-max-width, 1200px);
+  margin: 0 auto;
+  padding-left: clamp(1rem, 3vw, 1.5rem);
+  padding-right: clamp(1rem, 3vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.sticky-toc-pill {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: visible;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.sticky-toc-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 24px;
+  min-height: 52px;
+  box-sizing: border-box;
+}
+
+/* Green Bottom Accent Line on the Sticky Pill */
+.sticky-toc-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-primary); /* #6EA590 */
+  border-radius: 0 0 14px 14px;
+  z-index: 2;
+}
+
+/* Collapsed Header Elements */
+.sticky-toc-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.toc-collapsed-badge {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-primary); /* #6EA590 */
+  text-transform: uppercase;
+}
+
+.toc-collapsed-v-divider {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background-color: #E2E8F0;
+  margin: 0 14px;
+}
+
+.toc-collapsed-counter {
+  font-family: var(--font-family-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 600;
+  color: #94A3B8;
+  margin-right: 14px;
+}
+
+.toc-collapsed-section-title {
+  font-family: var(--font-family-sans);
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.sticky-toc-right {
+  display: flex;
+  align-items: center;
+}
+
+.toc-all-sections-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: #374151;
+  font-family: var(--font-family-sans);
+  font-size: 0.84375rem; /* 13.5px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  outline: none;
+}
+
+.toc-all-sections-btn:hover {
+  color: var(--color-primary);
+}
+
+.toc-all-sections-chevron {
+  stroke: currentColor;
+  transition: transform 0.25s ease;
+}
+
+.sticky-toc-pill.is-dropdown-open .toc-all-sections-chevron {
+  transform: rotate(180deg);
+}
+
+/* Sticky Sections Dropdown Panel (Overlay) */
+.sticky-toc-dropdown-panel {
+  display: none;
+  background: #FFFFFF;
+  border-top: 1px solid #F1F5F9;
+  border-radius: 0 0 14px 14px;
+  padding: 20px 24px 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12);
+}
+
+.sticky-toc-pill.is-dropdown-open .sticky-toc-dropdown-panel {
+  display: block;
+  animation: stickyDropdownSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes stickyDropdownSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. TOC 3-Columns Grid (Shared across in-page card & sticky dropdown) */
 .toc-columns-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -4231,13 +4227,16 @@ span.page-numbers[aria-current="page"] {
 
 @media (max-width: 768px) {
   .krypton-toc-section {
-    top: 75px;
     margin-bottom: 2rem;
   }
 
-  .toc-expanded-header,
-  .toc-collapsed-header {
-    padding: 12px 16px;
+  .toc-header-bar {
+    padding: 12px 18px;
+  }
+
+  .sticky-toc-bar-content {
+    padding: 10px 16px;
+    min-height: 48px;
   }
 
   .toc-collapsed-section-title {
@@ -4259,6 +4258,11 @@ span.page-numbers[aria-current="page"] {
 
   .toc-main-title {
     font-size: 1.125rem;
+  }
+
+  .sticky-toc-dropdown-panel {
+    padding: 16px 16px 20px;
+    max-height: 50vh;
   }
 
   .toc-columns-grid {
