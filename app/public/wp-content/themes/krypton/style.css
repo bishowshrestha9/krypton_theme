@@ -2218,13 +2218,17 @@ blockquote {
 /* Articles 3-Column Grid */
 .category-articles-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px 22px;
+  width: 100%;
 }
 
 .category-post-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .post-card-media-wrapper {
@@ -2233,10 +2237,9 @@ blockquote {
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--color-bg-subtle, #f1f5f9);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .category-post-card:hover .post-card-media-wrapper {
@@ -2245,23 +2248,39 @@ blockquote {
 }
 
 .post-card-media-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   text-decoration: none;
+  overflow: hidden;
 }
 
-.post-card-thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.post-card-thumbnail,
+.post-card-media-link img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   display: block;
 }
 
 /* Supplement Bottle Graphic Fallback */
 .post-card-bottle-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -2426,7 +2445,7 @@ blockquote {
   }
 
   .category-articles-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2446,7 +2465,7 @@ blockquote {
   }
 
   .category-articles-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
 }
