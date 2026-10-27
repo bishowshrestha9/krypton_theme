@@ -3247,6 +3247,10 @@ span.page-numbers[aria-current="page"] {
   color: #437362;
 }
 
+.single-breadcrumbs {
+  display: none !important;
+}
+
 /* 2. Post Title (h1) - Full Width to Right Border with Decreased Font Size */
 .single-post-title {
   font-family: var(--font-family-heading), 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
@@ -3255,7 +3259,7 @@ span.page-numbers[aria-current="page"] {
   line-height: 1.26;
   letter-spacing: -0.02em;
   color: #0A0A0A;
-  margin: 1.25rem 0 1.25rem 0;
+  margin: 0.5rem 0 1.25rem 0;
   width: 100%;
   max-width: 100%;
   display: block;

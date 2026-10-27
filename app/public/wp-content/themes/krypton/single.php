@@ -122,38 +122,7 @@ get_header();
 			<header class="entry-header single-post-header">
 				<div class="krypton-container single-header-container">
 					
-					<!-- 1. Breadcrumbs Navigation Trail -->
-					<nav class="single-breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'krypton' ); ?>">
-						<ol class="breadcrumb-list">
-							<li class="breadcrumb-item">
-								<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="breadcrumb-link font-inter">
-									<?php esc_html_e( 'Home', 'krypton' ); ?>
-								</a>
-							</li>
-							
-							<?php if ( $primary_category ) : ?>
-								<li class="breadcrumb-separator" aria-hidden="true">
-									<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-								</li>
-								<li class="breadcrumb-item">
-									<a href="<?php echo esc_url( get_category_link( $primary_category->term_id ) ); ?>" class="breadcrumb-category-link font-inter">
-										<?php echo esc_html( $primary_category->name ); ?>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<li class="breadcrumb-separator" aria-hidden="true">
-								<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-							</li>
-							<li class="breadcrumb-item breadcrumb-item-current" aria-current="page">
-								<span class="breadcrumb-product-pill font-inter">
-									<?php echo esc_html( $supplement_name ); ?>
-								</span>
-							</li>
-						</ol>
-					</nav>
-
-					<!-- 2. Post Title (h1) -->
+					<!-- 1. Post Title (h1) -->
 					<?php the_title( '<h1 class="entry-title single-post-title font-montserrat">', '</h1>' ); ?>
 
 					<!-- 3. Combined Author & Editorial Trust Bar (Bounded by Top & Bottom Divider Lines) -->
