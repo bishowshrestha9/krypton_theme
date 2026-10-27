@@ -74,14 +74,31 @@
 				?>
 			</nav>
 
-			<!-- Utility Actions: Search Trigger -->
+			<!-- Utility Actions: Functional Search Form with Label & Input -->
 			<div class="header-utility-actions">
-				<a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="search-trigger-btn" aria-label="<?php esc_attr_e( 'Search website', 'krypton' ); ?>" title="<?php esc_attr_e( 'Search', 'krypton' ); ?>">
-					<svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-						<circle cx="11" cy="11" r="8"></circle>
-						<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-					</svg>
-				</a>
+				<form role="search" method="get" class="header-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+					<label for="headerSearchInput" class="header-search-label font-inter">
+						<span class="header-search-label-text"><?php esc_html_e( 'Search', 'krypton' ); ?></span>
+					</label>
+					<div class="header-search-box">
+						<input 
+							type="search" 
+							id="headerSearchInput" 
+							class="header-search-input font-inter" 
+							placeholder="<?php esc_attr_e( 'Search articles...', 'krypton' ); ?>" 
+							value="<?php echo esc_attr( get_search_query() ); ?>" 
+							name="s" 
+							autocomplete="off" 
+							required 
+						/>
+						<button type="submit" class="header-search-submit-btn" aria-label="<?php esc_attr_e( 'Submit Search', 'krypton' ); ?>" title="<?php esc_attr_e( 'Search', 'krypton' ); ?>">
+							<svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<circle cx="11" cy="11" r="8"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+							</svg>
+						</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</header>
